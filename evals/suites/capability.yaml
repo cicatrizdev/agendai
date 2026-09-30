@@ -1,0 +1,12 @@
+# Tarefas difíceis: a taxa de sucesso começa baixa. É o morro a subir.
+name: capability
+tasks:
+  - bug-002
+  - bug-004
+  - build-002
+  - upgrade-001
+  - upgrade-002
+  - upgrade-003
+  - db-001
+  - db-002
+  - db-003

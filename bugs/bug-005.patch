@@ -1,0 +1,13 @@
+diff --git a/apps/api/src/domain/availability.ts b/apps/api/src/domain/availability.ts
+index eb9e368..697b5ce 100644
+--- a/apps/api/src/domain/availability.ts
++++ b/apps/api/src/domain/availability.ts
+@@ -23,7 +23,7 @@ export function listAvailableSlots(request: AvailabilityRequest): string[] {
+   if (!hours) return [];
+ 
+   const busy = request.bookings
+-    .filter((b) => b.staffMemberId === staffMemberId && b.status !== "cancelled")
++    .filter((b) => b.staffMemberId === staffMemberId)
+     .map(bookingInterval);
+ 
+   const slots: string[] = [];

@@ -1,0 +1,35 @@
+diff --git a/supabase/migrations/20260101000000_agendai_schema.sql b/supabase/migrations/20260101000000_agendai_schema.sql
+index 48de643..e111419 100644
+--- a/supabase/migrations/20260101000000_agendai_schema.sql
++++ b/supabase/migrations/20260101000000_agendai_schema.sql
+@@ -61,7 +61,7 @@ create table public.bookings (
+   client_id uuid not null,
+   starts_at timestamptz not null,
+   ends_at timestamptz not null,
+-  status text not null default 'confirmed' check (status in ('confirmed', 'cancelled', 'no_show')),
++  status text not null default 'confirmed' check (status in ('confirmed', 'cancelled')),
+   created_at timestamptz not null default now(),
+   check (ends_at > starts_at),
+   -- Composite keys guarantee that every reference belongs to the same tenant.
+diff --git a/supabase/migrations/20260101000100_agendai_rls.sql b/supabase/migrations/20260101000100_agendai_rls.sql
+index 8830b3e..1f1e0e8 100644
+--- a/supabase/migrations/20260101000100_agendai_rls.sql
++++ b/supabase/migrations/20260101000100_agendai_rls.sql
+@@ -83,7 +83,7 @@ create policy clients_staff_insert on public.clients
+     )
+   );
+ 
+--- bookings: members read, create and update; only owners may mark a no-show; nobody deletes
++-- bookings: members read, create and update; nobody deletes
+ create policy bookings_select on public.bookings
+   for select to authenticated using (public.is_member(tenant_id));
+ 
+@@ -93,7 +93,7 @@ create policy bookings_insert on public.bookings
+ create policy bookings_update on public.bookings
+   for update to authenticated
+   using (public.is_member(tenant_id))
+-  with check (public.is_member(tenant_id) and (status <> 'no_show' or public.is_owner(tenant_id)));
++  with check (public.is_member(tenant_id));
+ 
+ grant execute on function public.is_member(uuid) to authenticated;
+ grant execute on function public.is_owner(uuid) to authenticated;

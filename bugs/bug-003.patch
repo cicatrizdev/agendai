@@ -1,0 +1,13 @@
+diff --git a/apps/api/src/domain/cancellation.ts b/apps/api/src/domain/cancellation.ts
+index 60e5bca..dbb7c37 100644
+--- a/apps/api/src/domain/cancellation.ts
++++ b/apps/api/src/domain/cancellation.ts
+@@ -2,6 +2,6 @@ export const CANCELLATION_WINDOW_MINUTES = 120;
+ 
+ /** A booking can be cancelled up to 2 hours before it starts. */
+ export function canCancel(startsAt: Date, now: Date): boolean {
+-  const minutesUntilStart = (startsAt.getTime() - now.getTime()) / 60_000;
+-  return minutesUntilStart >= CANCELLATION_WINDOW_MINUTES;
++  const minutesSinceStart = (now.getTime() - startsAt.getTime()) / 60_000;
++  return minutesSinceStart <= CANCELLATION_WINDOW_MINUTES;
+ }

@@ -1,0 +1,18 @@
+diff --git a/apps/api/src/repositories/supabase.ts b/apps/api/src/repositories/supabase.ts
+index 1f074a4..e7abbfc 100644
+--- a/apps/api/src/repositories/supabase.ts
++++ b/apps/api/src/repositories/supabase.ts
+@@ -26,6 +26,13 @@ export function createUserClient(url: string, anonKey: string, accessToken: stri
+   });
+ }
+ 
++/** Client for background jobs that need to see every tenant (e.g. reminders). */
++export function createAdminClient(url: string): SupabaseClient {
++  return createClient(url, process.env.SUPABASE_SERVICE_ROLE_KEY ?? "", {
++    auth: { persistSession: false, autoRefreshToken: false },
++  });
++}
++
+ type Row = Record<string, unknown>;
+ 
+ interface QueryResult {

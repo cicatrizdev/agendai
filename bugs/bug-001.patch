@@ -1,0 +1,13 @@
+diff --git a/apps/api/src/domain/overlap.ts b/apps/api/src/domain/overlap.ts
+index d39970d..aad04da 100644
+--- a/apps/api/src/domain/overlap.ts
++++ b/apps/api/src/domain/overlap.ts
+@@ -8,7 +8,7 @@ export interface Interval {
+ 
+ /** True when two half-open intervals share at least one instant. */
+ export function overlaps(a: Interval, b: Interval): boolean {
+-  return a.start < b.end && b.start < a.end;
++  return a.start <= b.end && b.start <= a.end;
+ }
+ 
+ export function bookingInterval(booking: Pick<Booking, "startsAt" | "endsAt">): Interval {

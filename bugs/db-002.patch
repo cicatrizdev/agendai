@@ -1,0 +1,12 @@
+diff --git a/supabase/migrations/20260101000100_agendai_rls.sql b/supabase/migrations/20260101000100_agendai_rls.sql
+index 8830b3e..5d78997 100644
+--- a/supabase/migrations/20260101000100_agendai_rls.sql
++++ b/supabase/migrations/20260101000100_agendai_rls.sql
+@@ -68,7 +68,6 @@ create policy clients_staff_select on public.clients
+     exists (
+       select 1 from public.memberships m
+       where m.user_id = (select auth.uid())
+-        and m.tenant_id = clients.tenant_id
+         and m.role = 'staff'
+     )
+   );

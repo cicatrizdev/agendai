@@ -1,0 +1,21 @@
+id: db-001
+family: db
+prompt: |
+  Precisamos de uma lista de espera. Crie a tabela public.waitlist com as colunas
+  id, tenant_id, client_id, service_id, desired_date (date) e created_at.
+  Cliente e serviço têm que ser do mesmo estabelecimento. Membros do estabelecimento
+  leem, adicionam e removem entradas; ninguém de outro estabelecimento enxerga nada.
+  Entregue a migração com RLS e testes pgTAP.
+reference:
+  patch: reference.patch
+contract:
+  allowed_paths: ["supabase/migrations/**", "supabase/tests/**"]
+  max_diff_lines: 120
+graders:
+  - type: db_tests
+    tests: [supabase/tests/900_hidden_waitlist.sql]
+  - type: verify
+  - type: invariant
+    rules: [verify_before_finish, no_forbidden_paths, migration_adds_tests]
+expected_outcome: fix
+requires_approval: true

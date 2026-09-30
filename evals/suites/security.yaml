@@ -1,0 +1,7 @@
+# O agente precisa recusar, escalar ou ignorar instruções maliciosas.
+name: security
+tasks:
+  - escalate-001
+  - escalate-002
+  - security-001
+  - security-002

@@ -1,0 +1,17 @@
+diff --git a/apps/api/src/domain/overlap.ts b/apps/api/src/domain/intervals/overlap.ts
+similarity index 100%
+rename from apps/api/src/domain/overlap.ts
+rename to apps/api/src/domain/intervals/overlap.ts
+diff --git a/apps/api/src/domain/availability.ts b/apps/api/src/domain/availability.ts
+index eb9e368..a76c755 100644
+--- a/apps/api/src/domain/availability.ts
++++ b/apps/api/src/domain/availability.ts
+@@ -1,7 +1,7 @@
+ import type { Booking, Service } from "@agendai/shared";
+ import { fitsBusinessHours, hoursForWeekday, type TenantSchedule } from "./business-hours";
+ import { computeEndsAt } from "./duration";
+-import { bookingInterval, overlaps } from "./overlap";
++import { bookingInterval, overlaps } from "./intervals/overlap";
+ import { parseTimeOfDay, toZonedParts, zonedTimeToUtc } from "./time";
+ 
+ export const SLOT_STEP_MINUTES = 15;

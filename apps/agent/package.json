@@ -1,0 +1,14 @@
+{
+  "name": "@autofix/agent",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "autofix": "tsx src/cli.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "devDependencies": {
+    "vitest": "^5.0.3"
+  }
+}

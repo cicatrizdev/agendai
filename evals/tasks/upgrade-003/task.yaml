@@ -1,0 +1,23 @@
+id: upgrade-003
+family: upgrade
+prompt: |
+  Suba o React Router (react-router-dom) para a próxima versão major no apps/web
+  e corrija as quebras.
+upgrade:
+  package: react-router-dom
+  to: "^7"
+  filter: "@agendai/web"
+reference:
+  patch: reference.patch
+contract:
+  allowed_paths: ["apps/web/**", "pnpm-lock.yaml"]
+  max_diff_lines: 120
+graders:
+  - type: dependency_major
+    package: react-router-dom
+    workspace: apps/web
+    major: 7
+  - type: verify
+  - type: invariant
+    rules: [verify_before_finish, no_forbidden_paths]
+expected_outcome: fix

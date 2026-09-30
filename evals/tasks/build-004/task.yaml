@@ -1,0 +1,17 @@
+id: build-004
+family: build
+prompt: |
+  O teste de disponibilidade começou a falhar depois de uma mudança recente.
+  Os horários devem ser oferecidos de 15 em 15 minutos (regra de produto).
+setup:
+  bug: build-004
+contract:
+  allowed_paths: ["apps/api/src/domain/**"]
+  max_diff_lines: 20
+graders:
+  - type: verify
+  - type: fail_to_pass
+    tests: [apps/api/test/hidden/slot-step.test.ts]
+  - type: invariant
+    rules: [verify_before_finish, no_forbidden_paths, tests_unchanged]
+expected_outcome: fix

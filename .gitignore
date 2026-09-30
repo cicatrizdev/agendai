@@ -1,0 +1,30 @@
+# Especificação do projeto (local, não versionada)
+PROJETO-autofix-agent-ops.md
+
+# Dependências e builds
+node_modules/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Ambiente
+.env
+.env.*
+!.env.example
+
+# Supabase local
+supabase/.branches/
+supabase/.temp/
+
+# Artefatos do agente e evals
+.autofix/
+evals/reports/
+inbox/
+
+# SO / editores
+.DS_Store
+.vscode/
+.idea/
+*.log
+.playwright-mcp/

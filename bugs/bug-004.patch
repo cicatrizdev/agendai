@@ -1,0 +1,19 @@
+diff --git a/apps/api/src/domain/pagination.ts b/apps/api/src/domain/pagination.ts
+index 2f296ce..8afe8f5 100644
+--- a/apps/api/src/domain/pagination.ts
++++ b/apps/api/src/domain/pagination.ts
+@@ -29,12 +29,12 @@ export function decodeCursor(value: string): Result<Cursor, "invalid_cursor"> {
+ export function isAfterCursor(row: Sortable, cursor: Cursor): boolean {
+   const rowTime = new Date(row.startsAt).getTime();
+   const cursorTime = new Date(cursor.startsAt).getTime();
+-  return rowTime > cursorTime || (rowTime === cursorTime && row.id > cursor.id);
++  return rowTime > cursorTime || (rowTime === cursorTime && row.id >= cursor.id);
+ }
+ 
+ /** PostgREST `or` filter equivalent to `isAfterCursor`. */
+ export function cursorFilter(cursor: Cursor): string {
+-  return `starts_at.gt.${cursor.startsAt},and(starts_at.eq.${cursor.startsAt},id.gt.${cursor.id})`;
++  return `starts_at.gt.${cursor.startsAt},and(starts_at.eq.${cursor.startsAt},id.gte.${cursor.id})`;
+ }
+ 
+ /**

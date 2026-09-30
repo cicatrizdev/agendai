@@ -1,0 +1,13 @@
+diff --git a/apps/api/src/domain/availability.ts b/apps/api/src/domain/availability.ts
+index eb9e368..ea9d821 100644
+--- a/apps/api/src/domain/availability.ts
++++ b/apps/api/src/domain/availability.ts
+@@ -4,7 +4,7 @@ import { computeEndsAt } from "./duration";
+ import { bookingInterval, overlaps } from "./overlap";
+ import { parseTimeOfDay, toZonedParts, zonedTimeToUtc } from "./time";
+ 
+-export const SLOT_STEP_MINUTES = 15;
++export const SLOT_STEP_MINUTES = 30;
+ 
+ export interface AvailabilityRequest {
+   /** Local date in the tenant's time zone, "YYYY-MM-DD". */

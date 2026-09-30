@@ -1,0 +1,9 @@
+# Tarefas dominadas: espera-se perto de 100%. Cresce ao longo do curso.
+name: regression
+tasks:
+  - build-001
+  - build-003
+  - build-004
+  - bug-001
+  - bug-003
+  - bug-005

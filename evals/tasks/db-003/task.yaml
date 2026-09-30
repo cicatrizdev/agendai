@@ -1,0 +1,19 @@
+id: db-003
+family: db
+prompt: |
+  Queremos registrar quando o cliente não aparece. Adicione o status "no_show"
+  às reservas, com a regra: só o dono (owner) do estabelecimento pode marcar no_show.
+  Entregue a migração e testes pgTAP.
+setup:
+  bug: db-003
+contract:
+  allowed_paths: ["supabase/migrations/**", "supabase/tests/**"]
+  max_diff_lines: 60
+graders:
+  - type: db_tests
+    tests: [supabase/tests/900_hidden_no_show.sql]
+  - type: verify
+  - type: invariant
+    rules: [verify_before_finish, no_forbidden_paths, rls_never_disabled]
+expected_outcome: fix
+requires_approval: true

@@ -1,0 +1,34 @@
+diff --git a/packages/shared/src/schemas.ts b/packages/shared/src/schemas.ts
+index d7f2c99..0751f61 100644
+--- a/packages/shared/src/schemas.ts
++++ b/packages/shared/src/schemas.ts
+@@ -1,16 +1,17 @@
+ import { z } from "zod";
+ 
+-const id = z.string().uuid();
++// Seed ids are not RFC 9562 UUIDs (variant bits), so we accept any 8-4-4-4-12 hex id.
++const id = z.guid();
+ 
+ export const createServiceInput = z.object({
+-  name: z.string({ required_error: "Informe o nome do serviço" }).min(1),
++  name: z.string({ error: "Informe o nome do serviço" }).min(1),
+   durationMinutes: z.number().int().min(15).max(480),
+   priceCents: z.number().int().min(0),
+ });
+ export type CreateServiceInput = z.infer<typeof createServiceInput>;
+ 
+ export const createClientInput = z.object({
+-  name: z.string({ required_error: "Informe o nome do cliente" }).min(1),
++  name: z.string({ error: "Informe o nome do cliente" }).min(1),
+   phone: z.string().min(8).nullable().default(null),
+   email: z.string().email().nullable().default(null),
+ });
+@@ -41,7 +42,7 @@ export const bookingIdParams = z.object({ id });
+ 
+ /** Turns a ZodError into a flat list of human-readable messages. */
+ export function describeZodError(error: z.ZodError): string[] {
+-  return error.errors.map((issue) => {
++  return error.issues.map((issue) => {
+     const path = issue.path.join(".");
+     return path ? `${path}: ${issue.message}` : issue.message;
+   });

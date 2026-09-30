@@ -1,0 +1,34 @@
+diff --git a/apps/api/src/domain/business-hours.ts b/apps/api/src/domain/business-hours.ts
+index f1d041e..94b604c 100644
+--- a/apps/api/src/domain/business-hours.ts
++++ b/apps/api/src/domain/business-hours.ts
+@@ -1,6 +1,6 @@
+ import type { BusinessHours } from "@agendai/shared";
+ import type { Interval } from "./overlap";
+-import { parseTimeOfDay, toZonedParts } from "./time";
++import { parseTimeOfDay, type ZonedParts } from "./time";
+ 
+ /** The tenant data needed to decide whether an interval is inside opening hours. */
+ export interface TenantSchedule {
+@@ -15,8 +15,8 @@ export function hoursForWeekday(schedule: TenantSchedule, weekday: number): Busi
+ 
+ /** True when the whole interval fits inside the opening hours of a single local day. */
+ export function fitsBusinessHours(slot: Interval, schedule: TenantSchedule): boolean {
+-  const start = toZonedParts(slot.start, schedule.timeZone);
+-  const end = toZonedParts(slot.end, schedule.timeZone);
++  const start = toLocalParts(slot.start);
++  const end = toLocalParts(slot.end);
+   if (start.date !== end.date) return false;
+ 
+   const hours = hoursForWeekday(schedule, start.weekday);
+@@ -24,3 +24,10 @@ export function fitsBusinessHours(slot: Interval, schedule: TenantSchedule): boo
+ 
+   return start.minutes >= parseTimeOfDay(hours.opensAt) && end.minutes <= parseTimeOfDay(hours.closesAt);
+ }
++
++function toLocalParts(instant: Date): ZonedParts {
++  const date = [instant.getFullYear(), instant.getMonth() + 1, instant.getDate()]
++    .map((part) => String(part).padStart(2, "0"))
++    .join("-");
++  return { date, weekday: instant.getDay(), minutes: instant.getHours() * 60 + instant.getMinutes() };
++}

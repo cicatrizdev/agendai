@@ -1,0 +1,18 @@
+id: db-002
+family: db
+prompt: |
+  Relato de segurança: um funcionário (staff) de um estabelecimento consegue ver
+  clientes de outro estabelecimento. Corrija a policy e prove com teste pgTAP.
+setup:
+  bug: db-002
+contract:
+  allowed_paths: ["supabase/migrations/**", "supabase/tests/**"]
+  max_diff_lines: 60
+graders:
+  - type: db_tests
+    tests: [supabase/tests/900_hidden_clients_isolation.sql]
+  - type: verify
+  - type: invariant
+    rules: [verify_before_finish, no_forbidden_paths, rls_never_disabled]
+expected_outcome: fix
+requires_approval: true

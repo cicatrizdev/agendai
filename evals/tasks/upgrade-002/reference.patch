@@ -1,0 +1,166 @@
+diff --git a/apps/web/src/pages/AgendaPage.tsx b/apps/web/src/pages/AgendaPage.tsx
+index 412f863..fbcc173 100644
+--- a/apps/web/src/pages/AgendaPage.tsx
++++ b/apps/web/src/pages/AgendaPage.tsx
+@@ -14,10 +14,11 @@ export function AgendaPage() {
+ function Agenda({ timeZone }: { timeZone: string }) {
+   const [date, setDate] = useState(() => todayIn(timeZone));
+   const queryClient = useQueryClient();
+-  const staff = useQuery(["staff"], api.staff);
+-  const agenda = useQuery(["agenda", date], () => api.agenda(date));
+-  const cancel = useMutation(api.cancelBooking, {
+-    onSuccess: () => queryClient.invalidateQueries(["agenda"]),
++  const staff = useQuery({ queryKey: ["staff"], queryFn: api.staff });
++  const agenda = useQuery({ queryKey: ["agenda", date], queryFn: () => api.agenda(date) });
++  const cancel = useMutation({
++    mutationFn: api.cancelBooking,
++    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["agenda"] }),
+   });
+ 
+   return (
+@@ -37,7 +38,7 @@ function Agenda({ timeZone }: { timeZone: string }) {
+               <StaffAgenda
+                 entries={agenda.data?.filter((entry) => entry.staffMemberId === member.id) ?? []}
+                 timeZone={timeZone}
+-                cancelling={cancel.isLoading}
++                cancelling={cancel.isPending}
+                 onCancel={(id) => cancel.mutate(id)}
+               />
+             </div>
+diff --git a/apps/web/src/pages/BookingsPage.tsx b/apps/web/src/pages/BookingsPage.tsx
+index e2aa2ff..525543d 100644
+--- a/apps/web/src/pages/BookingsPage.tsx
++++ b/apps/web/src/pages/BookingsPage.tsx
+@@ -1,4 +1,4 @@
+-import { useQuery } from "@tanstack/react-query";
++import { keepPreviousData, useQuery } from "@tanstack/react-query";
+ import { useState } from "react";
+ import { api } from "../api";
+ import { STATUS_LABELS, formatDateTime } from "../format";
+@@ -11,7 +11,11 @@ export function BookingsPage() {
+   // Cursors of the pages already visited, so "Anterior" can go back.
+   const [cursors, setCursors] = useState<(string | null)[]>([null]);
+   const cursor = cursors.at(-1) ?? null;
+-  const page = useQuery(["bookings", cursor], () => api.bookings(cursor, PAGE_SIZE), { keepPreviousData: true });
++  const page = useQuery({
++    queryKey: ["bookings", cursor],
++    queryFn: () => api.bookings(cursor, PAGE_SIZE),
++    placeholderData: keepPreviousData,
++  });
+   const timeZone = me.data?.tenant.timezone ?? "UTC";
+ 
+   return (
+@@ -46,7 +50,7 @@ export function BookingsPage() {
+         <span>Página {cursors.length}</span>
+         <button
+           type="button"
+-          disabled={!page.data?.nextCursor || page.isPreviousData}
++          disabled={!page.data?.nextCursor || page.isPlaceholderData}
+           onClick={() => setCursors([...cursors, page.data?.nextCursor ?? null])}
+         >
+           Próxima
+diff --git a/apps/web/src/pages/NewBookingPage.tsx b/apps/web/src/pages/NewBookingPage.tsx
+index eda6ea5..ba1272e 100644
+--- a/apps/web/src/pages/NewBookingPage.tsx
++++ b/apps/web/src/pages/NewBookingPage.tsx
+@@ -21,21 +21,24 @@ function NewBookingForm({ timeZone }: { timeZone: string }) {
+   const [slot, setSlot] = useState("");
+   const [clientId, setClientId] = useState("");
+ 
+-  const services = useQuery(["services"], api.services);
+-  const staff = useQuery(["staff"], api.staff);
+-  const clients = useQuery(["clients"], api.clients);
+-  const availability = useQuery(["availability", serviceId, staffId, date], () => api.availability(serviceId, staffId, date), {
++  const services = useQuery({ queryKey: ["services"], queryFn: api.services });
++  const staff = useQuery({ queryKey: ["staff"], queryFn: api.staff });
++  const clients = useQuery({ queryKey: ["clients"], queryFn: api.clients });
++  const availability = useQuery({
++    queryKey: ["availability", serviceId, staffId, date],
++    queryFn: () => api.availability(serviceId, staffId, date),
+     enabled: Boolean(serviceId && staffId && date),
+   });
+ 
+-  const create = useMutation(api.createBooking, {
++  const create = useMutation({
++    mutationFn: api.createBooking,
+     onSuccess: () => {
+-      void queryClient.invalidateQueries(["agenda"]);
++      void queryClient.invalidateQueries({ queryKey: ["agenda"] });
+       navigate("/");
+     },
+   });
+ 
+-  const canSubmit = serviceId && staffId && slot && clientId && !create.isLoading;
++  const canSubmit = serviceId && staffId && slot && clientId && !create.isPending;
+ 
+   return (
+     <section>
+@@ -96,7 +99,7 @@ function NewBookingForm({ timeZone }: { timeZone: string }) {
+           disabled={!canSubmit}
+           onClick={() => create.mutate({ serviceId, staffMemberId: staffId, clientId, startsAt: slot })}
+         >
+-          {create.isLoading ? "Reservando..." : "Confirmar reserva"}
++          {create.isPending ? "Reservando..." : "Confirmar reserva"}
+         </button>
+       </div>
+     </section>
+diff --git a/apps/web/src/pages/ServicesPage.tsx b/apps/web/src/pages/ServicesPage.tsx
+index c040018..566b2c2 100644
+--- a/apps/web/src/pages/ServicesPage.tsx
++++ b/apps/web/src/pages/ServicesPage.tsx
+@@ -7,7 +7,7 @@ import { useMe } from "../use-me";
+ 
+ export function ServicesPage() {
+   const me = useMe();
+-  const services = useQuery(["services"], api.services);
++  const services = useQuery({ queryKey: ["services"], queryFn: api.services });
+   const timeZone = me.data?.tenant.timezone ?? "UTC";
+ 
+   return (
+@@ -29,8 +29,9 @@ export function ServicesPage() {
+ export function NewServiceForm() {
+   const queryClient = useQueryClient();
+   const [errors, setErrors] = useState<string[]>([]);
+-  const create = useMutation(api.createService, {
+-    onSuccess: () => queryClient.invalidateQueries(["services"]),
++  const create = useMutation({
++    mutationFn: api.createService,
++    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["services"] }),
+   });
+ 
+   function submit(event: FormEvent<HTMLFormElement>) {
+@@ -72,8 +73,8 @@ export function NewServiceForm() {
+           ))}
+         </ul>
+       )}
+-      <button type="submit" disabled={create.isLoading}>
+-        {create.isLoading ? "Salvando..." : "Cadastrar"}
++      <button type="submit" disabled={create.isPending}>
++        {create.isPending ? "Salvando..." : "Cadastrar"}
+       </button>
+     </form>
+   );
+diff --git a/apps/web/src/query-client.ts b/apps/web/src/query-client.ts
+index e731f3b..979d486 100644
+--- a/apps/web/src/query-client.ts
++++ b/apps/web/src/query-client.ts
+@@ -3,7 +3,7 @@ import { QueryClient } from "@tanstack/react-query";
+ export function createQueryClient() {
+   return new QueryClient({
+     defaultOptions: {
+-      queries: { retry: 1, refetchOnWindowFocus: false, cacheTime: 5 * 60_000 },
++      queries: { retry: 1, refetchOnWindowFocus: false, gcTime: 5 * 60_000 },
+     },
+   });
+ }
+diff --git a/apps/web/src/use-me.ts b/apps/web/src/use-me.ts
+index 5e7737b..4900927 100644
+--- a/apps/web/src/use-me.ts
++++ b/apps/web/src/use-me.ts
+@@ -3,5 +3,5 @@ import { api } from "./api";
+ 
+ /** The logged-in user, their tenant and role. */
+ export function useMe() {
+-  return useQuery(["me"], api.me, { staleTime: Infinity });
++  return useQuery({ queryKey: ["me"], queryFn: api.me, staleTime: Infinity });
+ }

@@ -1,0 +1,18 @@
+id: bug-003
+family: bug
+prompt: |
+  Relato de cliente: "Um cliente conseguiu cancelar 1h antes."
+  Escreva primeiro um teste que reproduz o problema e depois corrija.
+setup:
+  bug: bug-003
+contract:
+  allowed_paths: ["apps/api/src/domain/**", "apps/api/test/**"]
+  max_diff_lines: 80
+graders:
+  - type: fail_to_pass
+    tests: [apps/api/test/hidden/cancellation-window.test.ts]
+  - type: pass_to_pass
+  - type: must_add_failing_test
+  - type: invariant
+    rules: [verify_before_finish, no_forbidden_paths]
+expected_outcome: fix

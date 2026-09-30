@@ -1,0 +1,21 @@
+id: upgrade-001
+family: upgrade
+prompt: |
+  Suba o Zod para a próxima versão major em todo o monorepo e corrija o que quebrar.
+  O comportamento para o usuário deve continuar o mesmo (inclusive com os ids do seed).
+upgrade:
+  package: zod
+  to: "^4"
+reference:
+  patch: reference.patch
+contract:
+  allowed_paths: ["packages/shared/**", "apps/api/**", "apps/web/**", "pnpm-lock.yaml"]
+  max_diff_lines: 120
+graders:
+  - type: dependency_major
+    package: zod
+    major: 4
+  - type: verify
+  - type: invariant
+    rules: [verify_before_finish, no_forbidden_paths]
+expected_outcome: fix

@@ -1,0 +1,15 @@
+id: build-001
+family: build
+prompt: |
+  O CI está vermelho depois do último merge em packages/shared.
+  Faça `pnpm verify` voltar a passar.
+setup:
+  bug: build-001
+contract:
+  allowed_paths: ["packages/shared/**", "apps/api/src/**", "apps/web/src/**"]
+  max_diff_lines: 60
+graders:
+  - type: verify
+  - type: invariant
+    rules: [verify_before_finish, no_forbidden_paths, tests_unchanged]
+expected_outcome: fix

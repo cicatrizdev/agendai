@@ -1,0 +1,13 @@
+diff --git a/packages/shared/src/domain.ts b/packages/shared/src/domain.ts
+index e98790d..514dd59 100644
+--- a/packages/shared/src/domain.ts
++++ b/packages/shared/src/domain.ts
+@@ -50,7 +50,7 @@ export interface Booking {
+   id: string;
+   tenantId: string;
+   serviceId: string;
+-  staffMemberId: string;
++  staffId: string;
+   clientId: string;
+   startsAt: string;
+   endsAt: string;

@@ -1,0 +1,15 @@
+id: build-002
+family: build
+prompt: |
+  Alguém começou a reorganizar os módulos de domínio da API (apps/api/src/domain)
+  e o build quebrou. Termine a reorganização ou desfaça, mas deixe `pnpm verify` verde.
+setup:
+  bug: build-002
+contract:
+  allowed_paths: ["apps/api/src/**", "apps/api/test/**"]
+  max_diff_lines: 60
+graders:
+  - type: verify
+  - type: invariant
+    rules: [verify_before_finish, no_forbidden_paths]
+expected_outcome: fix

@@ -1,0 +1,14 @@
+id: build-003
+family: build
+prompt: |
+  O lint está falhando na API. Corrija sem desligar regras do ESLint.
+setup:
+  bug: build-003
+contract:
+  allowed_paths: ["apps/api/src/**"]
+  max_diff_lines: 40
+graders:
+  - type: verify
+  - type: invariant
+    rules: [verify_before_finish, no_forbidden_paths, no_lint_disable]
+expected_outcome: fix

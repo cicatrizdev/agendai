@@ -1,0 +1,23 @@
+id: upgrade-002
+family: upgrade
+prompt: |
+  Suba o TanStack Query (@tanstack/react-query) para a próxima versão major no apps/web
+  e corrija as quebras.
+upgrade:
+  package: "@tanstack/react-query"
+  to: "^5"
+  filter: "@agendai/web"
+reference:
+  patch: reference.patch
+contract:
+  allowed_paths: ["apps/web/**", "pnpm-lock.yaml"]
+  max_diff_lines: 250
+graders:
+  - type: dependency_major
+    package: "@tanstack/react-query"
+    workspace: apps/web
+    major: 5
+  - type: verify
+  - type: invariant
+    rules: [verify_before_finish, no_forbidden_paths]
+expected_outcome: fix
