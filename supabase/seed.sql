@@ -76,11 +76,11 @@ insert into public.clients (id, tenant_id, name, phone, email) values
 
 -- São Paulo: Mon–Fri 09:00–18:00, Sat 09:00–13:00. Lisbon: Mon–Fri 10:00–19:00.
 insert into public.business_hours (tenant_id, weekday, opens_at, closes_at)
-select 'b0000000-0000-0000-0000-000000000001', d, '09:00', '18:00' from generate_series(1, 5) d
+select 'b0000000-0000-0000-0000-000000000001'::uuid, d, '09:00'::time, '18:00'::time from generate_series(1, 5) d
 union all
-select 'b0000000-0000-0000-0000-000000000001', 6, '09:00', '13:00'
+select 'b0000000-0000-0000-0000-000000000001'::uuid, 6, '09:00'::time, '13:00'::time
 union all
-select 'b0000000-0000-0000-0000-000000000002', d, '10:00', '19:00' from generate_series(1, 5) d;
+select 'b0000000-0000-0000-0000-000000000002'::uuid, d, '10:00'::time, '19:00'::time from generate_series(1, 5) d;
 
 -- Bookings -----------------------------------------------------------------
 -- From 5 days ago to 10 days ahead, four fixed local times per staff member.
