@@ -67,7 +67,7 @@ Suítes em `evals/suites/`: `capability`, `regression` e `security`.
 apps/web            Agendaí (React + Vite + TanStack Query + React Router)
 apps/api            Agendaí API (Fastify; regras de negócio puras em src/domain)
 apps/agent          harness do AutoFix (vazio no início do curso)
-aulas/01-pilares    laboratório do módulo 1 (vazio até o vídeo 1.2)
+aulas/01-pilares    laboratório do módulo 1 (isOverlapping, a partir do vídeo 1.2)
 apps/ops-console    sala de controle (React + Recharts; dados estáticos no início)
 packages/shared     tipos, schemas Zod, Result, eventos do agente
 packages/eslint-rules  regras ESLint customizadas
