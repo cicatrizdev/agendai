@@ -2,8 +2,10 @@
 
 Repositório do curso Alura **"Engenharia de Loops: Arquitetando Agentes de IA Autônomos"**.
 
-- **Agendaí** (`apps/web`, `apps/api`, `supabase/`): SaaS multi-tenant de agendamentos. É o "mundo" onde o agente trabalha.
-- **AutoFix Agent Ops** (`apps/agent`, `apps/ops-console`): o agente que mantém o Agendaí e a sala de controle para operá-lo. É construído ao longo do curso.
+- **Agendaí** (`apps/web`, `apps/api`, `supabase/`): SaaS multi-tenant de agendamentos. É o mundo onde o loop trabalha.
+- **Loop** (`aulas/01-pilares`, depois `apps/agent`): o mesmo harness em seis módulos. Cada módulo muda uma variável (pilares, mundo, sensor, parada, custo, escala). Não se constrói uma sala de controle.
+
+O vídeo 1.1 mostra o Agendaí e o placar do laboratório. O ops-console do M0 permanece estático e não é o produto do curso.
 
 ## Pré-requisitos
 
@@ -22,7 +24,6 @@ cp .env.example .env            # preencha as chaves com a saída de `supabase s
 pnpm verify                     # o oráculo: tem que terminar verde
 pnpm dev:api                    # API em http://localhost:3333
 pnpm dev:web                    # Agendaí em http://localhost:5173
-pnpm dev:console                # Sala de controle em http://localhost:5174
 ```
 
 Usuários do seed (senha `agendai123`):
@@ -44,7 +45,8 @@ Usuários do seed (senha `agendai123`):
 | `pnpm break --bug=<id>` | Injeta um bug do catálogo (`bugs/<id>.patch`) |
 | `pnpm restore` | Desfaz o bug injetado |
 | `pnpm check:tasks` | Valida todas as tarefas: o bug faz os graders falharem e a solução de referência faz passar. `--task=<id>` roda uma só; `--skip-db` pula o banco |
-| `pnpm autofix` | CLI do agente (construída a partir do vídeo 2.1) |
+| `pnpm lab:ask` (e os outros `lab:*`) | Demonstração do módulo 1 em replay. Ao vivo: [`aulas/01-pilares/ao-vivo.md`](aulas/01-pilares/ao-vivo.md) |
+| `pnpm autofix` | Runner do loop no Agendaí (a partir do vídeo 2.1) |
 
 ## Catálogo de tarefas
 
@@ -66,19 +68,19 @@ Suítes em `evals/suites/`: `capability`, `regression` e `security`.
 ```
 apps/web            Agendaí (React + Vite + TanStack Query + React Router)
 apps/api            Agendaí API (Fastify; regras de negócio puras em src/domain)
-apps/agent          harness do AutoFix (vazio no início do curso)
+apps/agent          runner do loop no Agendaí (vazio até o 2.1)
 aulas/01-pilares    laboratório do módulo 1 (demonstração; replay no padrão; ao vivo em aulas/01-pilares/ao-vivo.md)
-apps/ops-console    sala de controle (React + Recharts; dados estáticos no início)
+apps/ops-console    leftover do M0, dados estáticos; não entra em aula
 packages/shared     tipos, schemas Zod, Result, eventos do agente
 packages/eslint-rules  regras ESLint customizadas
 supabase/           migrações (schemas public e ops), seed e testes pgTAP
 bugs/               patches que injetam bugs
 evals/              tarefas, suítes e cassetes
-infra/sandbox       imagem Docker onde o agente executa comandos
+infra/sandbox       leftover do M0; não entra em aula
 scripts/            verify, break, restore, check:tasks
 docs/               decisões e mapa do curso
 ```
 
-O laboratório do módulo 1 (`pnpm lab:ask` e os outros `lab:*`) é demonstração e roda em replay, sem chave. Quem quiser um modelo ao vivo: [`aulas/01-pilares/ao-vivo.md`](aulas/01-pilares/ao-vivo.md).
+O laboratório do módulo 1 é demonstração e roda em replay, sem chave. Quem quiser um modelo ao vivo: [`aulas/01-pilares/ao-vivo.md`](aulas/01-pilares/ao-vivo.md).
 
-Decisões de projeto: [`docs/decisions.md`](docs/decisions.md). Tags e vídeos: [`docs/course-map.md`](docs/course-map.md).
+Decisões de projeto: [`docs/decisions.md`](docs/decisions.md). Mapa Versão C: [`docs/course-map.md`](docs/course-map.md).

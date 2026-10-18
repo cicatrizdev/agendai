@@ -137,3 +137,12 @@ A ementa passou a abrir com quatro pilares numa função só e a tratar estados,
 - **Contexto:** o laboratório dos vídeos 1.2–1.5 é demonstração, não exercício. Uma chave com billing não pode ser pré-requisito do curso. A Anthropic passou a exigir workspace e crédito em chaves novas.
 - **Decisão:** `AUTOFIX_PROVIDER` default é `replay`. As respostas do take ficam em `aulas/01-pilares/fixtures/`. Anthropic e Gemini existem como ramo opcional; a sessão [ao-vivo.md](../aulas/01-pilares/ao-vivo.md) avisa que o texto ao vivo é semelhante, não igual. O 2.1 herda replay default / live opcional.
 - **Descartada:** Gemini (ou qualquer cota grátis) como pré-requisito do aluno. O curso não depende de cadastro de modelo.
+
+## Versão C — seis módulos, um loop
+
+A vitrine da Alura continua com seis módulos. O que sai é a fábrica. O mapa vive em `docs/course-map.md`. As decisões 18, 19, 22 e 27 continuam válidas. As de 20, 21 e 23–26 descrevem a Versão B e não se implementam.
+
+### 28. Um harness, uma variável por módulo
+- **Contexto:** o AutoFix completo (console, webhook, `improve`, máquina de estados, Checker, juiz) é canhão para ensinar o loop. O módulo 1 já fecha o conceito. A ementa vendida pede seis módulos.
+- **Decisão:** o mesmo harness do lab sobe para `apps/agent` no 2.1 e não ganha subsystem novo. M1 pilares, M2 mundo (`bug-001` no Agendaí), M3 sensor (teste da tarefa, não `verify`), M4 parada (teto e `escalate`), M5 custo (`usage`), M6 escala (poucas tarefas + `security-001` não lê `.env`). Replay no padrão. 1.1 mostra o Agendaí e o placar do lab, não um console operacional.
+- **Descartada:** construir a sala de controle, persistir em `ops.events`, sandbox Docker, HMAC, pass@k, e tratar cada pasta-esqueleto de `apps/agent/src` como aula.
