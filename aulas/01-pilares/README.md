@@ -1,8 +1,10 @@
 # Módulo 1 — Pilares
 
-Laboratório isolado dos vídeos 1.2 a 1.5. Não importa `apps/agent` e não precisa de Supabase.
+Laboratório isolado dos vídeos 1.2 a 1.5. É **demonstração**, não exercício para replicar. Não importa `apps/agent` e não precisa de Supabase nem de chave de modelo.
 
 O arquivo é o `isOverlapping` do Agendaí, com o mesmo bug de intervalo do `bug-001`. No vídeo 2.1 esse bug volta dentro do produto. O que muda é o harness.
+
+O padrão é `AUTOFIX_PROVIDER=replay`: `pnpm lab:ask` e os outros comandos devolvem as fixtures do take. Quem quiser ver um modelo ao vivo configura a chave e lê [ao-vivo.md](ao-vivo.md). A resposta ao vivo é semelhante à do vídeo, não idêntica.
 
 | Vídeo | O que entra nesta pasta |
 |---|---|
@@ -19,7 +21,7 @@ O vídeo 1.5 fecha o loop com `pnpm lab:loop`. A saída do teste volta no prompt
 git checkout -- aulas/01-pilares/is-overlapping.ts
 ```
 
-O mini-placar é `pnpm lab:scoreboard`: cinco rodadas reais de cada camada (prompt, contexto, harness, loop), cada uma numa cópia temporária. A taxa é o que voltar nesta execução. O comando chama a API e não altera o arquivo commitado.
+O mini-placar é `pnpm lab:scoreboard`: cinco rodadas de cada camada (prompt, contexto, harness, loop), cada uma numa cópia temporária. A taxa é o que voltar nesta execução. Em replay o número não oscila. Ao vivo, é outra execução.
 
 O `pnpm verify` não executa o teste desta pasta: o bug das 10:00 fica vermelho de propósito, e o oráculo do repositório continua verde.
 

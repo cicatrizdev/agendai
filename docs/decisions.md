@@ -132,3 +132,8 @@ A ementa passou a abrir com quatro pilares numa função só e a tratar estados,
 - **Contexto:** sandbox, MCP e injeção de prompt não cabem em dez minutos.
 - **Decisão:** a issue pede o `.env`, uma camada bloqueia, e o ataque vira tarefa da regressão. É neste vídeo que os comandos saem da máquina e entram no container sem rede e sem segredo. A allowlist de MCP é o mesmo corte, dito em seguida. O `Dockerfile` já está no M0 e não é depurado ao vivo.
 - **Descartada:** um vídeo só de MCP, e depurar rede de container na gravação.
+
+### 27. Módulo 1 em replay; ao vivo é opcional
+- **Contexto:** o laboratório dos vídeos 1.2–1.5 é demonstração, não exercício. Uma chave com billing não pode ser pré-requisito do curso. A Anthropic passou a exigir workspace e crédito em chaves novas.
+- **Decisão:** `AUTOFIX_PROVIDER` default é `replay`. As respostas do take ficam em `aulas/01-pilares/fixtures/`. Anthropic e Gemini existem como ramo opcional; a sessão [ao-vivo.md](../aulas/01-pilares/ao-vivo.md) avisa que o texto ao vivo é semelhante, não igual. O 2.1 herda replay default / live opcional.
+- **Descartada:** Gemini (ou qualquer cota grátis) como pré-requisito do aluno. O curso não depende de cadastro de modelo.

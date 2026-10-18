@@ -67,7 +67,7 @@ Suítes em `evals/suites/`: `capability`, `regression` e `security`.
 apps/web            Agendaí (React + Vite + TanStack Query + React Router)
 apps/api            Agendaí API (Fastify; regras de negócio puras em src/domain)
 apps/agent          harness do AutoFix (vazio no início do curso)
-aulas/01-pilares    laboratório do módulo 1 (isOverlapping, a partir do vídeo 1.2)
+aulas/01-pilares    laboratório do módulo 1 (demonstração; replay no padrão; ao vivo em aulas/01-pilares/ao-vivo.md)
 apps/ops-console    sala de controle (React + Recharts; dados estáticos no início)
 packages/shared     tipos, schemas Zod, Result, eventos do agente
 packages/eslint-rules  regras ESLint customizadas
@@ -78,5 +78,7 @@ infra/sandbox       imagem Docker onde o agente executa comandos
 scripts/            verify, break, restore, check:tasks
 docs/               decisões e mapa do curso
 ```
+
+O laboratório do módulo 1 (`pnpm lab:ask` e os outros `lab:*`) é demonstração e roda em replay, sem chave. Quem quiser um modelo ao vivo: [`aulas/01-pilares/ao-vivo.md`](aulas/01-pilares/ao-vivo.md).
 
 Decisões de projeto: [`docs/decisions.md`](docs/decisions.md). Tags e vídeos: [`docs/course-map.md`](docs/course-map.md).

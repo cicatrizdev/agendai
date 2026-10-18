@@ -1,8 +1,17 @@
-import type Anthropic from "@anthropic-ai/sdk";
 import { applyPatch } from "./patch";
 import { runTests } from "./run-tests";
 
-export const tools: Anthropic.Tool[] = [
+export interface LabTool {
+  name: string;
+  description: string;
+  input_schema: {
+    type: "object";
+    properties: Record<string, { type: string }>;
+    required?: string[];
+  };
+}
+
+export const tools: LabTool[] = [
   {
     name: "apply_patch",
     description: "Substitui um trecho exato de is-overlapping.ts.",

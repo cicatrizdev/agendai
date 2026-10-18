@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { copyLab, labDir, readLabFile } from "./files";
 import { LOOP_CEILING, runLoop } from "./loop";
-import type { ToolReply } from "./model";
+import { complete, completeWithTools, resolveProvider, type ToolReply } from "./model";
 import { applyPatch, parseReplacement } from "./patch";
 import { runOneRound } from "./round";
 import { runTests } from "./run-tests";
@@ -178,10 +178,60 @@ describe("loop curto", () => {
     assert.match(before, /<=/);
   });
 
+  it("replay: prompt e uma rodada falham; contexto e loop acertam", async () => {
+    const previous = process.env.AUTOFIX_PROVIDER;
+    process.env.AUTOFIX_PROVIDER = "replay";
+    const before = readLabFile(labDir, "is-overlapping.ts");
+    try {
+      const scores = await runScoreboard(complete, completeWithTools, 1);
+      assert.deepEqual(
+        scores.map((score) => [score.layer, score.passed, score.runs]),
+        [
+          ["prompt", 0, 1],
+          ["contexto", 1, 1],
+          ["harness", 0, 1],
+          ["loop", 1, 1],
+        ],
+      );
+      assert.equal(readLabFile(labDir, "is-overlapping.ts"), before);
+    } finally {
+      if (previous === undefined) delete process.env.AUTOFIX_PROVIDER;
+      else process.env.AUTOFIX_PROVIDER = previous;
+    }
+  });
+
   it("uma falha da API não vira zero no placar", async () => {
     await assert.rejects(
       () => runScoreboard(async () => { throw new Error("falha da api"); }, fake([]), 1),
       /falha da api/,
     );
+  });
+});
+
+describe("provedor", () => {
+  it("replay é o padrão e não exige chave", () => {
+    const previous = process.env.AUTOFIX_PROVIDER;
+    process.env.AUTOFIX_PROVIDER = "";
+    try {
+      assert.equal(resolveProvider(), "replay");
+    } finally {
+      if (previous === undefined) delete process.env.AUTOFIX_PROVIDER;
+      else process.env.AUTOFIX_PROVIDER = previous;
+    }
+  });
+
+  it("anthropic sem chave aponta para a sessão ao vivo", () => {
+    const previous = process.env.AUTOFIX_PROVIDER;
+    const previousKey = process.env.ANTHROPIC_API_KEY;
+    process.env.AUTOFIX_PROVIDER = "anthropic";
+    process.env.ANTHROPIC_API_KEY = "";
+    try {
+      assert.throws(() => resolveProvider(), /ao-vivo\.md/);
+    } finally {
+      if (previous === undefined) delete process.env.AUTOFIX_PROVIDER;
+      else process.env.AUTOFIX_PROVIDER = previous;
+      if (previousKey === undefined) delete process.env.ANTHROPIC_API_KEY;
+      else process.env.ANTHROPIC_API_KEY = previousKey;
+    }
   });
 });
