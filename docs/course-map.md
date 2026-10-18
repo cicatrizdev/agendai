@@ -10,7 +10,7 @@ O placar é o efeito do vídeo só quando a mudança altera desfecho: 1.5, 2.4, 
 |---|---|---|---|
 | `inicio-curso` | — | Agendaí completo e verde, catálogo de 19 tarefas com testes ocultos e referências, `break`/`restore`, `check:tasks`, schema `ops`, ops-console com dados estáticos, `apps/agent` vazio. O `Dockerfile` da sandbox já está no repositório e só entra em vídeo no 6.2 | ✅ |
 | `aula-1.2-fim` | 1.2 | `aulas/01-pilares`: `isOverlapping` com o bug de intervalo. Chamada ao SDK com prompt vago e com prompt-especificação. Sem loop e sem `apps/agent` | ✅ |
-| `aula-1.3-fim` | 1.3 | Três chamadas no mesmo arquivo: só o código, código mais o teste que falha, despejo grande. Comparação pelo `usage` | ⏳ |
+| `aula-1.3-fim` | 1.3 | Três chamadas no mesmo arquivo: só o código, código mais o teste que falha, despejo grande. Comparação pelo `usage` | ✅ |
 | `aula-1.4-fim` | 1.4 | `apply_patch` e `run_tests`, uma rodada. A primeira correção plausível (`<=`) continua falhando no caso em que uma reserva termina quando a outra começa | ⏳ |
 | `aula-1.5-fim` | 1.5 | Loop curto: o erro volta, para no verde ou no teto. Mini-placar com cinco rodadas de cada camada (prompt, contexto, harness, loop) | ⏳ |
 | `aula-2.1-fim` | 2.1 | O mesmo bug, agora no Agendaí. `LLMProvider` (anthropic, replay, mock), trace JSONL, `--record` e `--replay`. Os comandos ainda rodam na máquina | ⏳ |

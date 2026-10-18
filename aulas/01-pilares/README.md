@@ -11,6 +11,8 @@ O arquivo é o `isOverlapping` do Agendaí, com o mesmo bug de intervalo do `bug
 | 1.4 | `apply_patch` e `run_tests`, uma rodada. A correção `<=` ainda falha no caso das 10h |
 | 1.5 | Loop curto e mini-placar com cinco rodadas de cada camada |
 
-O vídeo 1.2 compara os dois prompts com `pnpm lab:ask`. Nenhum dos dois roda o teste. O `pnpm verify` não executa o teste desta pasta: o bug das 10:00 fica vermelho de propósito, e o oráculo do repositório continua verde.
+O vídeo 1.2 compara os dois prompts com `pnpm lab:ask`. Nenhum dos dois roda o teste. O vídeo 1.3 mede três contextos com `pnpm lab:contexts`: só o código, o código com o teste que falha, e um despejo do repositório. A comparação é o `usage`.
+
+O `pnpm verify` não executa o teste desta pasta: o bug das 10:00 fica vermelho de propósito, e o oráculo do repositório continua verde.
 
 Os módulos 2 a 6 continuam em `apps/agent`.
