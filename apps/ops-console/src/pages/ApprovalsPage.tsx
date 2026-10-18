@@ -1,7 +1,8 @@
 import { useState } from "react";
 import type { Approval, OperatorRole } from "@agendai/shared";
-import { canDecide } from "../lib/metrics";
+import { Button } from "../components/ui/button";
 import { formatDateTime } from "../lib/format";
+import { canDecide } from "../lib/metrics";
 
 const RISK_LABELS = { low: "Baixo", medium: "Médio", high: "Alto (exige tech lead)" } as const;
 
@@ -38,12 +39,12 @@ export function ApprovalsPage({ initialApprovals, operator }: ApprovalsPageProps
                 Risco: {RISK_LABELS[approval.riskLevel]} · pedido em {formatDateTime(approval.requestedAt)}
               </span>
               <div className="actions">
-                <button type="button" disabled={!allowed} onClick={() => decide(approval.id, "approved")}>
+                <Button type="button" disabled={!allowed} onClick={() => decide(approval.id, "approved")}>
                   ✓ Aprovar
-                </button>
-                <button type="button" className="ghost" disabled={!allowed} onClick={() => decide(approval.id, "rejected")}>
+                </Button>
+                <Button type="button" variant="outline" disabled={!allowed} onClick={() => decide(approval.id, "rejected")}>
                   ✕ Recusar
-                </button>
+                </Button>
               </div>
               {!allowed && <p className="muted">Seu papel não pode decidir ações de risco alto.</p>}
             </li>

@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from "react";
 import type { Annotation } from "@agendai/shared";
 import { StatusBadge } from "../components/StatusBadge";
+import { Button } from "../components/ui/button";
+import { Input, Select, Textarea } from "../components/ui/input";
 import { currentOperator, events, runs } from "../data/static";
 import { sumBy } from "../lib/metrics";
 
@@ -32,13 +34,13 @@ export function ErrorAnalysisPage({ initialAnnotations }: { initialAnnotations: 
           <h2>Leitor de traces</h2>
           <label>
             Execução
-            <select value={selectedRunId} onChange={(e) => setSelectedRunId(e.target.value)}>
+            <Select className="w-auto min-w-44" value={selectedRunId} onChange={(e) => setSelectedRunId(e.target.value)}>
               {reviewable.map((r) => (
                 <option key={r.id} value={r.id}>
                   {r.taskId} ({r.status === "failed" ? "falha" : "sucesso"})
                 </option>
               ))}
-            </select>
+            </Select>
           </label>
           {run && (
             <>
@@ -59,18 +61,18 @@ export function ErrorAnalysisPage({ initialAnnotations }: { initialAnnotations: 
           <form onSubmit={annotate} className="annotate">
             <label>
               Anotação (open coding)
-              <textarea name="note" rows={3} placeholder="O que deu errado, com suas palavras" />
+              <Textarea name="note" rows={3} placeholder="O que deu errado, com suas palavras" />
             </label>
             <label>
               Categoria
-              <input name="category" list="categories" placeholder="ex.: pulou reprodução" />
+              <Input name="category" list="categories" placeholder="ex.: pulou reprodução" />
               <datalist id="categories">
                 {categories.map((c) => (
                   <option key={c.key} value={c.key} />
                 ))}
               </datalist>
             </label>
-            <button type="submit">Anotar</button>
+            <Button type="submit">Anotar</Button>
           </form>
         </div>
         <div className="card">

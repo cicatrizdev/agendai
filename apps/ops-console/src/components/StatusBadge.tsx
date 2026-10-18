@@ -1,7 +1,8 @@
 import type { RunStatus } from "@agendai/shared";
+import { Badge } from "./ui/badge";
 
 // Success and failure are told apart by icon + text, never by color alone (blue × orange palette).
-const STATUS: Record<RunStatus, { icon: string; label: string; tone: string }> = {
+const STATUS: Record<RunStatus, { icon: string; label: string; tone: "success" | "failure" | "neutral" }> = {
   succeeded: { icon: "✓", label: "Sucesso", tone: "success" },
   failed: { icon: "✕", label: "Falha", tone: "failure" },
   escalated: { icon: "↑", label: "Escalada", tone: "neutral" },
@@ -13,17 +14,17 @@ const STATUS: Record<RunStatus, { icon: string; label: string; tone: string }> =
 export function StatusBadge({ status }: { status: RunStatus }) {
   const { icon, label, tone } = STATUS[status];
   return (
-    <span className={`badge ${tone}`}>
+    <Badge tone={tone}>
       <span aria-hidden="true">{icon}</span> {label}
-    </span>
+    </Badge>
   );
 }
 
 /** Pass/fail marker used by sensors and grades. */
 export function PassFail({ passed }: { passed: boolean }) {
   return (
-    <span className={`badge ${passed ? "success" : "failure"}`}>
+    <Badge tone={passed ? "success" : "failure"}>
       <span aria-hidden="true">{passed ? "✓" : "✕"}</span> {passed ? "Passou" : "Falhou"}
-    </span>
+    </Badge>
   );
 }

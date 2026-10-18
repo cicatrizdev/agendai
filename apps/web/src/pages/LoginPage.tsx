@@ -1,4 +1,6 @@
 import { Form, json, redirect, useActionData, useNavigation, type ActionFunctionArgs } from "react-router-dom";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
 import { supabase } from "../supabase";
 
 export async function loginAction({ request }: ActionFunctionArgs) {
@@ -22,16 +24,16 @@ export function LoginPage() {
       <Form method="post" className="card">
         <label>
           E-mail
-          <input name="email" type="email" defaultValue="ana@belavista.test" required />
+          <Input name="email" type="email" defaultValue="ana@belavista.test" required />
         </label>
         <label>
           Senha
-          <input name="password" type="password" defaultValue="agendai123" required />
+          <Input name="password" type="password" defaultValue="agendai123" required />
         </label>
         {result?.error && <p className="error">{result.error}</p>}
-        <button type="submit" disabled={submitting}>
+        <Button type="submit" disabled={submitting}>
           {submitting ? "Entrando..." : "Entrar"}
-        </button>
+        </Button>
       </Form>
     </div>
   );

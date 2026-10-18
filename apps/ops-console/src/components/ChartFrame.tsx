@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from "react";
+import { Button } from "./ui/button";
 
 interface ChartFrameProps {
   title: string;
@@ -17,9 +18,9 @@ export function ChartFrame({ title, description, chart, table }: ChartFrameProps
           <h2>{title}</h2>
           {description && <p className="muted">{description}</p>}
         </div>
-        <button type="button" className="ghost" aria-pressed={showTable} onClick={() => setShowTable(!showTable)}>
+        <Button type="button" variant="outline" aria-pressed={showTable} onClick={() => setShowTable(!showTable)}>
           {showTable ? "Ver gráfico" : "Ver tabela"}
-        </button>
+        </Button>
       </header>
       {showTable ? table : chart}
     </section>
@@ -34,7 +35,7 @@ export const chartTheme = {
     contentStyle: {
       background: "var(--surface-1)",
       border: "1px solid var(--border)",
-      borderRadius: 8,
+      borderRadius: 2,
       color: "var(--text-primary)",
     },
     cursor: { stroke: "var(--baseline)", fill: "var(--hover-wash)" },

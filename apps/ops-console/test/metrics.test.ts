@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { AgentEvent, EvalRun, Trial } from "@agendai/shared";
 import { canDecide, cumulativeCost, summarizeEvalRun, sumBy } from "../src/lib/metrics";
 
-const evalRun: EvalRun = { id: "e1", suite: "capability", gitSha: "abc1234", gitTag: "aula-1.4-fim", harnessConfig: {}, isBaseline: true, startedAt: "2026-09-01T00:00:00Z" };
+const evalRun: EvalRun = { id: "e1", suite: "capability", gitSha: "abc1234", gitTag: "aula-2.5-fim", harnessConfig: {}, isBaseline: true, startedAt: "2026-09-01T00:00:00Z" };
 
 function trial(taskId: string, trialIndex: number, passed: boolean, costUsd = 0.1): Trial {
   return { id: `${taskId}-${trialIndex}`, evalRunId: "e1", taskId, trialIndex, runId: null, passed, score: passed ? 1 : 0, costUsd, iterations: 4, tokens: 1000 };
@@ -15,7 +15,7 @@ describe("summarizeEvalRun", () => {
     const summary = summarizeEvalRun(evalRun, trials);
     expect(summary.successRate).toBe(0.75);
     expect(summary.passHatK).toBe(0.5);
-    expect(summary.label).toBe("aula-1.4-fim");
+    expect(summary.label).toBe("aula-2.5-fim");
   });
 
   it("divides total cost by solved trials", () => {

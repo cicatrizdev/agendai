@@ -16,4 +16,9 @@ export async function serviceRoutes(app: FastifyInstance) {
   });
 
   app.get("/staff", async (request) => request.repo.listStaffMembers(request.me.tenant.id));
+
+  app.get("/business-hours", async (request) => {
+    const schedule = await request.repo.getSchedule(request.me.tenant.id);
+    return schedule.hours;
+  });
 }

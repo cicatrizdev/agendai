@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ChartFrame, chartTheme } from "../components/ChartFrame";
+import { Select } from "../components/ui/input";
 import { evalRuns, trials } from "../data/static";
 import { summarizeEvalRun, type EvalRunSummary } from "../lib/metrics";
 import { formatPercent, formatUsd } from "../lib/format";
@@ -123,13 +124,13 @@ function RunSelect(props: { label: string; value: string; onChange: (v: string) 
   return (
     <label>
       {props.label}
-      <select value={props.value} onChange={(e) => props.onChange(e.target.value)}>
+      <Select className="w-auto min-w-44" value={props.value} onChange={(e) => props.onChange(e.target.value)}>
         {props.summaries.map((s) => (
           <option key={s.evalRunId} value={s.evalRunId}>
             {s.label}
           </option>
         ))}
-      </select>
+      </Select>
     </label>
   );
 }

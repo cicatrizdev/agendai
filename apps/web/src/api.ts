@@ -1,6 +1,7 @@
 import type {
   AgendaEntry,
   Booking,
+  BusinessHours,
   Client,
   CreateBookingInput,
   CreateClientInput,
@@ -52,6 +53,7 @@ export const api = {
   services: () => request<Service[]>("/services"),
   createService: (input: CreateServiceInput) => post<Service>("/services", input),
   staff: () => request<StaffMember[]>("/staff"),
+  businessHours: () => request<BusinessHours[]>("/business-hours"),
   clients: () => request<Client[]>("/clients"),
   createClient: (input: CreateClientInput) => post<Client>("/clients", input),
   availability: (serviceId: string, staffId: string, date: string) =>

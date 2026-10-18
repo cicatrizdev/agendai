@@ -44,7 +44,7 @@ Usuários do seed (senha `agendai123`):
 | `pnpm break --bug=<id>` | Injeta um bug do catálogo (`bugs/<id>.patch`) |
 | `pnpm restore` | Desfaz o bug injetado |
 | `pnpm check:tasks` | Valida todas as tarefas: o bug faz os graders falharem e a solução de referência faz passar. `--task=<id>` roda uma só; `--skip-db` pula o banco |
-| `pnpm autofix` | CLI do agente (construída a partir do vídeo 1.2) |
+| `pnpm autofix` | CLI do agente (construída a partir do vídeo 2.1) |
 
 ## Catálogo de tarefas
 
@@ -67,6 +67,7 @@ Suítes em `evals/suites/`: `capability`, `regression` e `security`.
 apps/web            Agendaí (React + Vite + TanStack Query + React Router)
 apps/api            Agendaí API (Fastify; regras de negócio puras em src/domain)
 apps/agent          harness do AutoFix (vazio no início do curso)
+aulas/01-pilares    laboratório do módulo 1 (vazio até o vídeo 1.2)
 apps/ops-console    sala de controle (React + Recharts; dados estáticos no início)
 packages/shared     tipos, schemas Zod, Result, eventos do agente
 packages/eslint-rules  regras ESLint customizadas

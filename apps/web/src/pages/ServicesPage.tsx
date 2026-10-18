@@ -2,6 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, type FormEvent } from "react";
 import { createServiceInput, describeZodError } from "@agendai/shared";
 import { api } from "../api";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
 import { formatPrice } from "../format";
 import { useMe } from "../use-me";
 
@@ -55,15 +57,15 @@ export function NewServiceForm() {
       <h2>Novo serviço</h2>
       <label>
         Nome
-        <input name="name" />
+        <Input name="name" />
       </label>
       <label>
         Duração (min)
-        <input name="durationMinutes" type="number" defaultValue={30} />
+        <Input name="durationMinutes" type="number" defaultValue={30} />
       </label>
       <label>
         Preço
-        <input name="price" type="number" step="0.01" defaultValue={0} />
+        <Input name="price" type="number" step="0.01" defaultValue={0} />
       </label>
       {errors.length > 0 && (
         <ul className="error" role="alert">
@@ -72,9 +74,9 @@ export function NewServiceForm() {
           ))}
         </ul>
       )}
-      <button type="submit" disabled={create.isLoading}>
+      <Button type="submit" disabled={create.isLoading}>
         {create.isLoading ? "Salvando..." : "Cadastrar"}
-      </button>
+      </Button>
     </form>
   );
 }

@@ -1,4 +1,4 @@
-// Example data for the M0 console. The course replaces it with Supabase queries (from Aula 4 on).
+// Example data for the M0 console. Each page is wired when its data exists: scoreboard 2.5, costs 4.4, runs and error analysis 5.1, approvals 6.3.
 import type { AgentEvent, Annotation, Approval, EvalRun, OperatorRole, Run, Trial } from "@agendai/shared";
 
 export const currentOperator: { email: string; role: OperatorRole } = { email: "dev@autofix.test", role: "developer" };
@@ -62,12 +62,12 @@ export const approvals: Approval[] = [
 ];
 
 export const evalRuns: EvalRun[] = [
-  { id: "e1", suite: "capability", gitSha: "a1b2c3d", gitTag: "aula-1.4-fim", harnessConfig: {}, isBaseline: true, startedAt: "2026-09-01T10:00:00Z" },
-  { id: "e2", suite: "capability", gitSha: "b2c3d4e", gitTag: "aula-2.1-fim", harnessConfig: {}, isBaseline: false, startedAt: "2026-09-05T10:00:00Z" },
-  { id: "e3", suite: "capability", gitSha: "c3d4e5f", gitTag: "aula-2.3-fim", harnessConfig: {}, isBaseline: false, startedAt: "2026-09-10T10:00:00Z" },
-  { id: "e4", suite: "capability", gitSha: "d4e5f6a", gitTag: "aula-2.4-fim", harnessConfig: {}, isBaseline: false, startedAt: "2026-09-15T10:00:00Z" },
-  { id: "e5", suite: "capability", gitSha: "e5f6a7b", gitTag: "aula-3.4-fim", harnessConfig: {}, isBaseline: false, startedAt: "2026-09-22T10:00:00Z" },
-  { id: "e6", suite: "capability", gitSha: "f6a7b8c", gitTag: "aula-4.4-fim", harnessConfig: {}, isBaseline: false, startedAt: "2026-09-29T10:00:00Z" },
+  { id: "e1", suite: "capability", gitSha: "a1b2c3d", gitTag: "aula-2.5-fim", harnessConfig: {}, isBaseline: true, startedAt: "2026-09-01T10:00:00Z" },
+  { id: "e2", suite: "capability", gitSha: "b2c3d4e", gitTag: "aula-3.3-fim", harnessConfig: {}, isBaseline: false, startedAt: "2026-09-05T10:00:00Z" },
+  { id: "e3", suite: "capability", gitSha: "c3d4e5f", gitTag: "aula-3.5-fim", harnessConfig: {}, isBaseline: false, startedAt: "2026-09-10T10:00:00Z" },
+  { id: "e4", suite: "capability", gitSha: "d4e5f6a", gitTag: "aula-4.1-fim", harnessConfig: {}, isBaseline: false, startedAt: "2026-09-15T10:00:00Z" },
+  { id: "e5", suite: "capability", gitSha: "e5f6a7b", gitTag: "aula-4.4-fim", harnessConfig: {}, isBaseline: false, startedAt: "2026-09-22T10:00:00Z" },
+  { id: "e6", suite: "capability", gitSha: "f6a7b8c", gitTag: "aula-5.4-fim", harnessConfig: {}, isBaseline: false, startedAt: "2026-09-29T10:00:00Z" },
 ];
 
 const TASKS = ["build-001", "build-002", "build-003", "build-004", "bug-001", "bug-002", "bug-003", "bug-004", "bug-005", "upgrade-001"];

@@ -2,6 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "../supabase";
 import { useMe } from "../use-me";
+import { Button } from "./ui/button";
 
 export function Layout() {
   const me = useMe();
@@ -24,12 +25,14 @@ export function Layout() {
             Agenda
           </NavLink>
           <NavLink to="/bookings/new">Nova reserva</NavLink>
-          <NavLink to="/bookings">Reservas</NavLink>
+          <NavLink to="/bookings" end>
+            Reservas
+          </NavLink>
           <NavLink to="/services">Serviços</NavLink>
         </nav>
-        <button type="button" className="link" onClick={logout}>
+        <Button type="button" variant="quiet" onClick={logout}>
           Sair
-        </button>
+        </Button>
       </header>
       <main>
         {me.isError ? <p className="error">Não foi possível carregar sua conta.</p> : <Outlet />}

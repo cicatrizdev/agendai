@@ -60,7 +60,7 @@ Cada upgrade foi executado de verdade numa cópia do repositório (é o que o `c
 
 ### 11. Tipos do schema `ops` e `AgentEvent` já no M0
 - **Contexto:** o console do M0 tem dados estáticos, que precisam de forma.
-- **Decisão:** `packages/shared/src/ops.ts` define `Run`, `AgentEvent`, `EvalRun`, `Trial`, `Approval` e `Annotation`, espelhando o schema `ops`. Só tipos, sem comportamento, então o vídeo 1.2 continua escrevendo o `EventLog`.
+- **Decisão:** `packages/shared/src/ops.ts` define `Run`, `AgentEvent`, `EvalRun`, `Trial`, `Approval` e `Annotation`, espelhando o schema `ops`. Só tipos, sem comportamento. O `EventLog` é escrito no vídeo em que o harness nasce (2.1 na Versão B; decisão 18).
 
 ### 12. Schema `ops`: colunas extras
 - `eval_runs.git_tag` e `eval_runs.is_baseline`: o placar mostra a tag de cada ponto e o relatório compara com a última baseline.
@@ -68,7 +68,7 @@ Cada upgrade foi executado de verdade numa cópia do repositório (é o que o `c
 - `ops.events` é append-only via trigger, que vale até para a service key.
 
 ### 13. Endpoints além da lista da seção 5.3
-- `GET /me` (tenant e papel do usuário), `GET /staff` (lista de profissionais) e `GET /agenda?date=` (reservas do dia com nomes). O front precisa deles para a agenda e o fluxo de reserva.
+- `GET /me` (tenant e papel do usuário), `GET /staff` (lista de profissionais), `GET /agenda?date=` (reservas do dia com nomes) e `GET /business-hours` (abre e fecha de cada dia da semana). O front precisa deles para a agenda e o fluxo de reserva.
 
 ### 14. Integridade no banco
 - FKs compostas `(id, tenant_id)` garantem que serviço, profissional e cliente de uma reserva são do mesmo tenant.
@@ -83,3 +83,52 @@ Cada upgrade foi executado de verdade numa cópia do repositório (é o que o `c
 
 ### 17. Pré-requisito: Docker ≥ 20.10.10
 - O perfil seccomp do Docker 20.10.8 bloqueia syscalls usadas pelas imagens atuais do Supabase (o Postgres falha com `Operation not permitted` no `initdb`). Documentado no README.
+
+## Versão B — foco no loop
+
+A ementa passou a abrir com quatro pilares numa função só e a tratar estados, parada, feedback e controle como o miolo do curso. O mapa vive em `docs/course-map.md`. As decisões abaixo existem para a gravação não prometer um efeito que o código não mostra.
+
+### 18. Módulo 1 fora do harness
+- **Contexto:** o 2.1 precisa de um corte visível entre "um arquivo" e "o produto".
+- **Decisão:** o laboratório fica em `aulas/01-pilares/`, com `isOverlapping` e o teste dela, sem importar `apps/agent` e sem Supabase. A primeira correção plausível troca `<` por `<=` e o caso das 10h continua falhando, para o loop do 1.5 ter o que corrigir.
+- **Descartada:** construir o laboratório dentro de `apps/agent`. O 2.1 deixaria de ser a entrada no produto.
+
+### 19. O mesmo bug nas duas camadas
+- **Contexto:** o `bug-001` do Agendaí é a mesma regra de intervalo semiaberto.
+- **Decisão:** o 2.1 reapresenta esse bug de propósito. A frase do vídeo é que o bug não mudou, o harness mudou.
+- **Descartada:** um bug didático diferente no laboratório. Perde o callback.
+
+### 20. O placar não sobe em todo vídeo
+- **Contexto:** a ementa mede o curso inteiro por taxa de sucesso, custo e iterações. Parte dos vídeos não muda desfecho.
+- **Decisão:** o placar é o efeito de 1.5, 2.4, 2.5, 3.3, 3.5, 4.1 e 4.4. O 2.3 mede token e ida ao diretório errado. O 3.1 mostra o estado nomeado no trace de um run parado em "verificando".
+- **Descartada:** exibir um delta de acerto em todo checkpoint.
+
+### 21. Três jeitos de parar, em três vídeos
+- **Contexto:** limite, `escalate` e circuit breaker dizem "parar" e, se caírem no mesmo vídeo, viram lista.
+- **Decisão:** no 3.2 quem para é o harness (oráculo verde ou teto de iterações). No 3.5 quem para é o modelo, pela ferramenta `escalate`, com uma tarefa impossível na suíte. No 4.4 o teto deixa de ser contagem de voltas e passa a ser token, dólar, tempo e rodadas de verificação, lidos do `usage`. Cache de prompt é uma frase no 4.5, porque é o que se repete a cada volta.
+- **Descartada:** um vídeo de `ModelRouter`. É feature, não conceito.
+
+### 22. O sensor da volta não é o `pnpm verify`
+- **Contexto:** `pnpm verify` faz typecheck, lint, Vitest e `supabase db reset`. Dentro do loop, cada volta leva minutos.
+- **Decisão:** o sensor de parada roda o teste da tarefa. `pnpm verify` continua sendo o oráculo do repositório e do `check:tasks`. O 2.4 diz isso em uma frase.
+- **Descartada:** chamar `pnpm verify` a cada iteração.
+
+### 23. A janela é uma vista, o estado é o arquivo
+- **Contexto:** o 4.5 juntava três estratégias de contexto e três implementações de `StateStore`.
+- **Decisão:** só `FileStateStore` (JSON + `STATUS.md`). O vídeo mostra o histórico acumulado piorando e a volta seguinte recomeçando a janela a partir do arquivo. A prova é matar o processo e retomar. Compactar é mencionado e não é implementado.
+- **Descartada:** SQLite e `SupabaseStateStore` como vídeos. Três estratégias com o mesmo peso.
+
+### 24. A sala de controle não tem vídeo
+- **Contexto:** o 1.1, gravado no repositório final, mostra a sala ao vivo. Durante o curso as páginas ligam quando o dado existe.
+- **Decisão:** Placar no 2.5, Custos no 4.4, Execuções e Análise de erros no 5.1 (aí o trace passa a `ops.events`), Aprovações no 6.3. Até lá o console permanece o do M0.
+- **Descartada:** ligar a timeline no 2.1. Esse vídeo já carrega o tour do Agendaí, o `break` e o `LLMProvider`.
+
+### 25. Rótulos prontos, e o Checker precisa de um caso que o teste não vê
+- **Contexto:** 20 casos no 4.2, 30 traces no 5.1 e 30 rótulos no 5.3 não cabem na gravação. Nos bugs mecânicos do catálogo o Checker só acrescenta custo.
+- **Decisão:** os conjuntos vêm no repositório. O vídeo anota três e abre o relatório. O conjunto do Checker inclui casos que passam no teste e erram a issue.
+- **Descartada:** rotular ao vivo.
+
+### 26. No 6.2, cortar uma perna
+- **Contexto:** sandbox, MCP e injeção de prompt não cabem em dez minutos.
+- **Decisão:** a issue pede o `.env`, uma camada bloqueia, e o ataque vira tarefa da regressão. É neste vídeo que os comandos saem da máquina e entram no container sem rede e sem segredo. A allowlist de MCP é o mesmo corte, dito em seguida. O `Dockerfile` já está no M0 e não é depurado ao vivo.
+- **Descartada:** um vídeo só de MCP, e depurar rede de container na gravação.

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { api } from "../api";
+import { Button } from "../components/ui/button";
 import { STATUS_LABELS, formatDateTime } from "../format";
 import { useMe } from "../use-me";
 
@@ -20,6 +21,7 @@ export function BookingsPage() {
       {page.isLoading ? (
         <p>Carregando...</p>
       ) : (
+        <div className="hscroll">
         <table className="card">
           <thead>
             <tr>
@@ -38,19 +40,20 @@ export function BookingsPage() {
             ))}
           </tbody>
         </table>
+        </div>
       )}
       <div className="pager">
-        <button type="button" disabled={cursors.length === 1} onClick={() => setCursors(cursors.slice(0, -1))}>
+        <Button type="button" disabled={cursors.length === 1} onClick={() => setCursors(cursors.slice(0, -1))}>
           Anterior
-        </button>
+        </Button>
         <span>Página {cursors.length}</span>
-        <button
+        <Button
           type="button"
           disabled={!page.data?.nextCursor || page.isPreviousData}
           onClick={() => setCursors([...cursors, page.data?.nextCursor ?? null])}
         >
           Próxima
-        </button>
+        </Button>
       </div>
     </section>
   );

@@ -120,6 +120,21 @@ describe("GET /bookings", () => {
   });
 });
 
+describe("GET /business-hours", () => {
+  it("returns the tenant's weekday hours", async () => {
+    const { app, auth } = setup();
+    const response = await app.inject({ method: "GET", url: "/business-hours", headers: auth });
+    expect(response.statusCode).toBe(200);
+    expect(response.json()).toEqual(weekdayHours());
+  });
+
+  it("rejects requests without a token", async () => {
+    const { app } = setup();
+    const response = await app.inject({ method: "GET", url: "/business-hours" });
+    expect(response.statusCode).toBe(401);
+  });
+});
+
 describe("GET /availability", () => {
   it("lists free slots for the tenant's local date", async () => {
     const { app, auth } = setup();

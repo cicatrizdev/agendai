@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { Run } from "@agendai/shared";
 import { StatusBadge } from "../components/StatusBadge";
+import { Select } from "../components/ui/input";
 import { FAMILY_LABELS, formatDateTime, formatUsd } from "../lib/format";
 
 const ALL = "";
@@ -21,36 +22,37 @@ export function RunsPage({ runs }: { runs: Run[] }) {
       <div className="filters">
         <label>
           Família
-          <select value={family} onChange={(e) => setFamily(e.target.value)}>
+          <Select className="w-auto min-w-44" value={family} onChange={(e) => setFamily(e.target.value)}>
             <option value={ALL}>Todas</option>
             {Object.entries(FAMILY_LABELS).map(([value, label]) => (
               <option key={value} value={value}>
                 {label}
               </option>
             ))}
-          </select>
+          </Select>
         </label>
         <label>
           Status
-          <select value={status} onChange={(e) => setStatus(e.target.value)}>
+          <Select className="w-auto min-w-44" value={status} onChange={(e) => setStatus(e.target.value)}>
             <option value={ALL}>Todos</option>
             <option value="succeeded">Sucesso</option>
             <option value="failed">Falha</option>
             <option value="escalated">Escalada</option>
             <option value="running">Em execução</option>
             <option value="awaiting_approval">Aguardando aprovação</option>
-          </select>
+          </Select>
         </label>
         <label>
           Modo
-          <select value={mode} onChange={(e) => setMode(e.target.value)}>
+          <Select className="w-auto min-w-44" value={mode} onChange={(e) => setMode(e.target.value)}>
             <option value={ALL}>Todos</option>
             <option value="local">Local</option>
             <option value="github">GitHub</option>
             <option value="replay">Replay</option>
-          </select>
+          </Select>
         </label>
       </div>
+      <div className="hscroll">
       <table className="card">
         <thead>
           <tr>
@@ -81,6 +83,7 @@ export function RunsPage({ runs }: { runs: Run[] }) {
           ))}
         </tbody>
       </table>
+      </div>
       {visible.length === 0 && <p className="muted">Nenhuma execução com esses filtros.</p>}
     </section>
   );
