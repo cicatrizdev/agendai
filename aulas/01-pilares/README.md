@@ -25,4 +25,4 @@ O mini-placar é `pnpm lab:scoreboard`: cinco rodadas de cada camada (prompt, co
 
 O `pnpm verify` não executa o teste desta pasta: o bug das 10:00 fica vermelho de propósito, e o oráculo do repositório continua verde.
 
-A partir do 2.1 o mesmo loop sobe para `apps/agent` e encontra o Agendaí. Não se constrói uma sala de controle.
+Do módulo 2 em diante o mesmo bug segue no Agendaí, um pilar por módulo. O mapa está em `docs/course-map.md`.

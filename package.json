@@ -25,7 +25,7 @@
     "dev:api": "pnpm --filter @agendai/api dev",
     "dev:web": "pnpm --filter @agendai/web dev",
     "dev:console": "pnpm --filter @autofix/ops-console dev",
-    "autofix": "pnpm --filter @autofix/agent autofix"
+    "autofix": "pnpm --filter @autofix/agent autofix --"
   },
   "devDependencies": {
     "@agendai/shared": "workspace:*",

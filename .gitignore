@@ -1,5 +1,6 @@
-# Especificação do projeto (local, não versionada)
+# Especificação do projeto e colinha de gravação (local, não versionadas)
 PROJETO-autofix-agent-ops.md
+docs/colinha.md
 
 # Dependências e builds
 node_modules/

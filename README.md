@@ -3,7 +3,7 @@
 Repositório do curso Alura **"Engenharia de Loops: Arquitetando Agentes de IA Autônomos"**.
 
 - **Agendaí** (`apps/web`, `apps/api`, `supabase/`): SaaS multi-tenant de agendamentos. É o mundo onde o loop trabalha.
-- **Loop** (`aulas/01-pilares`, depois `apps/agent`): o mesmo harness em seis módulos. Cada módulo muda uma variável (pilares, mundo, sensor, parada, custo, escala). Não se constrói uma sala de controle.
+- **Loop** (`aulas/01-pilares`, depois `apps/agent`): módulo 1 nos quatro pilares, módulos 2 a 5 construindo prompt, contexto, ferramenta e loop no Agendaí, módulo 6 na governança. Não se constrói uma sala de controle.
 
 O vídeo 1.1 mostra o Agendaí e o placar do laboratório. O ops-console do M0 permanece estático e não é o produto do curso.
 
@@ -46,7 +46,12 @@ Usuários do seed (senha `agendai123`):
 | `pnpm restore` | Desfaz o bug injetado |
 | `pnpm check:tasks` | Valida todas as tarefas: o bug faz os graders falharem e a solução de referência faz passar. `--task=<id>` roda uma só; `--skip-db` pula o banco |
 | `pnpm lab:ask` (e os outros `lab:*`) | Demonstração do módulo 1 em replay. Ao vivo: [`aulas/01-pilares/ao-vivo.md`](aulas/01-pilares/ao-vivo.md) |
-| `pnpm autofix` | Runner do loop no Agendaí (a partir do vídeo 2.1) |
+| `pnpm autofix ask --task=bug-001` | M2. Especificação do relato. Não grava no arquivo |
+| `pnpm autofix contexts --task=bug-001` | M3. Três contextos. Não grava no arquivo |
+| `pnpm autofix round --task=bug-001` | M4. Uma volta. O comentário muda e as 10:00 seguem vermelhas. Antes: `pnpm break --bug=bug-001` |
+| `pnpm autofix run --task=bug-001` | M5. A segunda volta troca `<=` por `<`. Antes: `pnpm break --bug=bug-001` |
+| `pnpm autofix run --task=escalate-001` | M6. Devolve a issue da taxa sem editar arquivo |
+| `pnpm autofix round --task=security-001` | M6. O patch em `.env` é recusado |
 
 ## Catálogo de tarefas
 
@@ -68,7 +73,7 @@ Suítes em `evals/suites/`: `capability`, `regression` e `security`.
 ```
 apps/web            Agendaí (React + Vite + TanStack Query + React Router)
 apps/api            Agendaí API (Fastify; regras de negócio puras em src/domain)
-apps/agent          runner do loop no Agendaí (vazio até o 2.1)
+apps/agent          runner do loop no Agendaí (a partir do 2.1)
 aulas/01-pilares    laboratório do módulo 1 (demonstração; replay no padrão; ao vivo em aulas/01-pilares/ao-vivo.md)
 apps/ops-console    leftover do M0, dados estáticos; não entra em aula
 packages/shared     tipos, schemas Zod, Result, eventos do agente
@@ -83,4 +88,4 @@ docs/               decisões e mapa do curso
 
 O laboratório do módulo 1 é demonstração e roda em replay, sem chave. Quem quiser um modelo ao vivo: [`aulas/01-pilares/ao-vivo.md`](aulas/01-pilares/ao-vivo.md).
 
-Decisões de projeto: [`docs/decisions.md`](docs/decisions.md). Mapa Versão C: [`docs/course-map.md`](docs/course-map.md).
+Decisões de projeto: [`docs/decisions.md`](docs/decisions.md). Mapa Versão D: [`docs/course-map.md`](docs/course-map.md).

@@ -146,3 +146,13 @@ A vitrine da Alura continua com seis módulos. O que sai é a fábrica. O mapa v
 - **Contexto:** o AutoFix completo (console, webhook, `improve`, máquina de estados, Checker, juiz) é canhão para ensinar o loop. O módulo 1 já fecha o conceito. A ementa vendida pede seis módulos.
 - **Decisão:** o mesmo harness do lab sobe para `apps/agent` no 2.1 e não ganha subsystem novo. M1 pilares, M2 mundo (`bug-001` no Agendaí), M3 sensor (teste da tarefa, não `verify`), M4 parada (teto e `escalate`), M5 custo (`usage`), M6 escala (poucas tarefas + `security-001` não lê `.env`). Replay no padrão. 1.1 mostra o Agendaí e o placar do lab, não um console operacional.
 - **Descartada:** construir a sala de controle, persistir em `ops.events`, sandbox Docker, HMAC, pass@k, e tratar cada pasta-esqueleto de `apps/agent/src` como aula.
+- **Substituída pela 29.** O corte de módulos da Versão C não se grava.
+
+## Versão D — um pilar por módulo, no Agendaí
+
+O mapa vive em `docs/course-map.md`. As decisões 18, 19 e 27 continuam válidas: o laboratório fica fora do harness, o bug das 10:00 é o mesmo nas duas camadas, replay é o padrão. A fábrica da decisão 28 continua de fora.
+
+### 29. Dois a cinco constroem o pilar. Seis é a review
+- **Contexto:** sensor, teto, dólar e placar soam como camada interna. Quem desenvolve escreve o ticket, escolhe o arquivo, dá a ferramenta de edição e deixa a falha voltar.
+- **Decisão:** M2 prompt, M3 contexto, M4 ferramenta, M5 loop, M6 governança (motivo da parada, caminho permitido, issue que pede o `.env`). Custo é uma frase no 6.2, sem página. O `apps/agent` atual já contém o loop inteiro e precisa ser fatiado antes do 2.1. O módulo 1 não se regrava.
+- **Descartada:** manter o módulo 2 como "o mesmo loop, outro arquivo", com ferramenta e `while` já prontos na primeira aula.
