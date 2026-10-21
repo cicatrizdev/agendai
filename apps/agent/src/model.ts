@@ -37,7 +37,7 @@ export function resolveProvider(): Provider {
   if (raw === "anthropic") {
     if (!envValue("ANTHROPIC_API_KEY")) {
       throw new Error(
-        "AUTOFIX_PROVIDER=anthropic exige ANTHROPIC_API_KEY. Veja aulas/01-pilares/ao-vivo.md ou volte para replay.",
+        "AUTOFIX_PROVIDER=anthropic exige ANTHROPIC_API_KEY. Volte para AUTOFIX_PROVIDER=replay.",
       );
     }
     return "anthropic";
@@ -45,7 +45,7 @@ export function resolveProvider(): Provider {
   if (raw === "gemini") {
     if (!envValue("GEMINI_API_KEY")) {
       throw new Error(
-        "AUTOFIX_PROVIDER=gemini exige GEMINI_API_KEY. Veja aulas/01-pilares/ao-vivo.md ou volte para replay.",
+        "AUTOFIX_PROVIDER=gemini exige GEMINI_API_KEY. Volte para AUTOFIX_PROVIDER=replay.",
       );
     }
     return "gemini";
@@ -64,12 +64,12 @@ function explainAnthropicError(error: unknown): never {
   const message = String(error.message);
   if (message.includes("anthropic-workspace-id")) {
     throw new Error(
-      "ANTHROPIC_WORKSPACE_ID ausente no .env. Veja aulas/01-pilares/ao-vivo.md ou volte para AUTOFIX_PROVIDER=replay.",
+      "ANTHROPIC_WORKSPACE_ID ausente no .env. Volte para AUTOFIX_PROVIDER=replay.",
     );
   }
   if (message.includes("credit balance is too low")) {
     throw new Error(
-      "Saldo da Anthropic insuficiente. Veja aulas/01-pilares/ao-vivo.md ou volte para AUTOFIX_PROVIDER=replay.",
+      "Saldo da Anthropic insuficiente. Volte para AUTOFIX_PROVIDER=replay.",
     );
   }
   throw error;
@@ -146,7 +146,7 @@ async function completeGeminiWithTools(prompt: string, tools: AgentTool[]): Prom
   const payload = (await response.json()) as GeminiResponse;
   if (!response.ok) {
     const message = payload.error?.message ?? `Gemini ${response.status}`;
-    throw new Error(`${message} Volte para AUTOFIX_PROVIDER=replay. Veja aulas/01-pilares/ao-vivo.md.`);
+    throw new Error(`${message} Volte para AUTOFIX_PROVIDER=replay.`);
   }
   const parts = payload.candidates?.[0]?.content?.parts ?? [];
   return {

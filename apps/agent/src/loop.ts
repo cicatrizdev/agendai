@@ -35,7 +35,7 @@ export interface LoopDeps {
   sensor?: () => TestResult;
 }
 
-/** Same loop as the lab: patch, sensor, repeat until green or ceiling. */
+/** Patch, run the task test, repeat until green or the ceiling. */
 export async function runLoop(root: string, task: Task, deps: LoopDeps): Promise<LoopResult> {
   const sense =
     deps.sensor ??

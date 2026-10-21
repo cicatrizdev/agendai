@@ -165,5 +165,5 @@ O mapa vive em `docs/course-map.md`. As decisões 18, 19 e 27 continuam válidas
 
 ### 31. Até o módulo 3 é chat. O script nasce no 4
 - **Contexto:** `pnpm autofix` aparecia antes da pessoa saber o que o script é. O instrutor e o estudante travavam na mesma pergunta: de onde vem esse comando.
-- **Decisão:** módulo 1 é o único laboratório. Módulos 2 e 3 são um chat com a CLI e um `AGENTS.md` (prompt, depois contexto). MCP é nomeado como fonte que não é arquivo. Não se cria servidor. O `apps/agent` e o nome `pnpm autofix` entram no módulo 4. M5 é o loop desse script. M6 é a governança.
+- **Decisão:** módulo 1 é o único laboratório, e já foi gravado. A pasta `aulas/` saiu do repositório. Módulos 2 e 3 são um chat com a CLI e um `AGENTS.md` (prompt, depois contexto). MCP é nomeado como fonte que não é arquivo. Não se cria servidor. O `apps/agent` e o nome `pnpm autofix` entram no módulo 4. M5 é o loop desse script. M6 é a governança.
 - **Descartada:** começar o módulo 2 rodando `pnpm autofix ask`. Construir um servidor MCP na aula.

@@ -8,12 +8,7 @@
   },
   "scripts": {
     "verify": "tsx scripts/verify.ts",
-    "typecheck": "pnpm -r --workspace-concurrency=1 typecheck && tsc -p tsconfig.scripts.json && tsc -p tsconfig.lab.json",
-    "lab:ask": "node --env-file-if-exists=.env --import tsx aulas/01-pilares/ask.ts",
-    "lab:contexts": "node --env-file-if-exists=.env --import tsx aulas/01-pilares/compare-contexts.ts",
-    "lab:round": "node --env-file-if-exists=.env --import tsx aulas/01-pilares/round.ts",
-    "lab:loop": "node --env-file-if-exists=.env --import tsx aulas/01-pilares/loop.ts",
-    "lab:scoreboard": "node --env-file-if-exists=.env --import tsx aulas/01-pilares/scoreboard.ts",
+    "typecheck": "pnpm -r --workspace-concurrency=1 typecheck && tsc -p tsconfig.scripts.json",
     "lint": "eslint .",
     "test": "pnpm -r --workspace-concurrency=1 test",
     "db:start": "supabase start",
