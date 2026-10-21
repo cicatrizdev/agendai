@@ -156,3 +156,14 @@ O mapa vive em `docs/course-map.md`. As decisões 18, 19 e 27 continuam válidas
 - **Contexto:** sensor, teto, dólar e placar soam como camada interna. Quem desenvolve escreve o ticket, escolhe o arquivo, dá a ferramenta de edição e deixa a falha voltar.
 - **Decisão:** M2 prompt, M3 contexto, M4 ferramenta, M5 loop, M6 governança (motivo da parada, caminho permitido, issue que pede o `.env`). Custo é uma frase no 6.2, sem página. O `apps/agent` atual já contém o loop inteiro e precisa ser fatiado antes do 2.1. O módulo 1 não se regrava.
 - **Descartada:** manter o módulo 2 como "o mesmo loop, outro arquivo", com ferramenta e `while` já prontos na primeira aula.
+
+### 30. O módulo 2 começa no grok
+- **Contexto:** o único laboratório é o módulo 1. Do 2 em diante a resposta tem de ser a CLI já autenticada, senão a aula volta a ser um take.
+- **Decisão:** o provider padrão de `apps/agent` é `grok` (`grok --prompt-file`, `--max-turns 1`, `--verbatim`, diretório temporário, sem ferramenta de escrita). A aula 2.1 liga isso e faz o primeiro `ask`. `AUTOFIX_PROVIDER=replay` fica para os testes e para quem não tem a CLI. O laboratório em `aulas/01-pilares` não muda.
+- **Descartada:** abrir o módulo 2 com um `ask` em replay e só depois trocar o provider. Dar à CLI a ferramenta de editar o repositório.
+- **O corte do módulo 2 foi substituído pela 31.** O provider `grok` continua valendo a partir do módulo 4, quando o script existe.
+
+### 31. Até o módulo 3 é chat. O script nasce no 4
+- **Contexto:** `pnpm autofix` aparecia antes da pessoa saber o que o script é. O instrutor e o estudante travavam na mesma pergunta: de onde vem esse comando.
+- **Decisão:** módulo 1 é o único laboratório. Módulos 2 e 3 são um chat com a CLI e um `AGENTS.md` (prompt, depois contexto). MCP é nomeado como fonte que não é arquivo. Não se cria servidor. O `apps/agent` e o nome `pnpm autofix` entram no módulo 4. M5 é o loop desse script. M6 é a governança.
+- **Descartada:** começar o módulo 2 rodando `pnpm autofix ask`. Construir um servidor MCP na aula.

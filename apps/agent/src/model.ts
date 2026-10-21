@@ -1,6 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { loadEnv } from "./env";
 import { replayBug001 } from "./fixtures/bug-001";
+import { completeWithGrok } from "./grok";
 import type { AgentTool } from "./tools";
 
 export interface Usage {
@@ -22,7 +23,7 @@ export interface ToolReply extends Reply {
   calls: ToolCall[];
 }
 
-export type Provider = "replay" | "anthropic" | "gemini";
+export type Provider = "replay" | "grok" | "anthropic" | "gemini";
 
 function envValue(key: string): string {
   return process.env[key]?.trim() ?? "";
@@ -30,8 +31,9 @@ function envValue(key: string): string {
 
 export function resolveProvider(): Provider {
   loadEnv();
-  const raw = envValue("AUTOFIX_PROVIDER") || "replay";
+  const raw = envValue("AUTOFIX_PROVIDER") || "grok";
   if (raw === "replay") return "replay";
+  if (raw === "grok") return "grok";
   if (raw === "anthropic") {
     if (!envValue("ANTHROPIC_API_KEY")) {
       throw new Error(
@@ -48,7 +50,7 @@ export function resolveProvider(): Provider {
     }
     return "gemini";
   }
-  throw new Error(`AUTOFIX_PROVIDER inválido: ${raw}. Use replay, anthropic ou gemini.`);
+  throw new Error(`AUTOFIX_PROVIDER inválido: ${raw}. Use replay, grok, anthropic ou gemini.`);
 }
 
 function requireModel(): string {
@@ -165,6 +167,7 @@ async function completeGeminiWithTools(prompt: string, tools: AgentTool[]): Prom
 export async function completeWithTools(prompt: string, tools: AgentTool[]): Promise<ToolReply> {
   const provider = resolveProvider();
   if (provider === "replay") return replayBug001(prompt);
+  if (provider === "grok") return completeWithGrok(prompt, tools);
   if (provider === "gemini") return completeGeminiWithTools(prompt, tools);
   return completeAnthropicWithTools(prompt, tools);
 }

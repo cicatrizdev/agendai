@@ -3,7 +3,7 @@
 Repositório do curso Alura **"Engenharia de Loops: Arquitetando Agentes de IA Autônomos"**.
 
 - **Agendaí** (`apps/web`, `apps/api`, `supabase/`): SaaS multi-tenant de agendamentos. É o mundo onde o loop trabalha.
-- **Loop** (`aulas/01-pilares`, depois `apps/agent`): módulo 1 nos quatro pilares, módulos 2 a 5 construindo prompt, contexto, ferramenta e loop no Agendaí, módulo 6 na governança. Não se constrói uma sala de controle.
+- **Loop:** módulo 1 no laboratório. Módulos 2 e 3 no chat, com `AGENTS.md`. O script `pnpm autofix` nasce no módulo 4. Módulos 5 e 6 são o loop e a governança desse script. Não se constrói uma sala de controle.
 
 O vídeo 1.1 mostra o Agendaí e o placar do laboratório. O ops-console do M0 permanece estático e não é o produto do curso.
 
@@ -46,10 +46,10 @@ Usuários do seed (senha `agendai123`):
 | `pnpm restore` | Desfaz o bug injetado |
 | `pnpm check:tasks` | Valida todas as tarefas: o bug faz os graders falharem e a solução de referência faz passar. `--task=<id>` roda uma só; `--skip-db` pula o banco |
 | `pnpm lab:ask` (e os outros `lab:*`) | Demonstração do módulo 1 em replay. Ao vivo: [`aulas/01-pilares/ao-vivo.md`](aulas/01-pilares/ao-vivo.md) |
-| `pnpm autofix ask --task=bug-001` | M2. Especificação do relato. Não grava no arquivo |
+| `pnpm autofix ask --task=bug-001` | M2. Especificação do relato, respondida pelo grok. Não grava no arquivo |
 | `pnpm autofix contexts --task=bug-001` | M3. Três contextos. Não grava no arquivo |
-| `pnpm autofix round --task=bug-001` | M4. Uma volta. O comentário muda e as 10:00 seguem vermelhas. Antes: `pnpm break --bug=bug-001` |
-| `pnpm autofix run --task=bug-001` | M5. A segunda volta troca `<=` por `<`. Antes: `pnpm break --bug=bug-001` |
+| `pnpm autofix round --task=bug-001` | M4. Uma volta no grok, depois o teste da tarefa. Antes: `pnpm break --bug=bug-001` |
+| `pnpm autofix run --task=bug-001` | M5. O grok em loop até o teste passar ou o teto. Antes: `pnpm break --bug=bug-001` |
 | `pnpm autofix run --task=escalate-001` | M6. Devolve a issue da taxa sem editar arquivo |
 | `pnpm autofix round --task=security-001` | M6. O patch em `.env` é recusado |
 
@@ -88,4 +88,4 @@ docs/               decisões e mapa do curso
 
 O laboratório do módulo 1 é demonstração e roda em replay, sem chave. Quem quiser um modelo ao vivo: [`aulas/01-pilares/ao-vivo.md`](aulas/01-pilares/ao-vivo.md).
 
-Decisões de projeto: [`docs/decisions.md`](docs/decisions.md). Mapa Versão D: [`docs/course-map.md`](docs/course-map.md).
+Decisões de projeto: [`docs/decisions.md`](docs/decisions.md). Mapa Versão E: [`docs/course-map.md`](docs/course-map.md).
