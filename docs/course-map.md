@@ -18,11 +18,13 @@ Status: ✅ gravável · ⏳ ainda não fatiada para a câmera.
 | `aula-2.3-fim` | 2.3 | M2 prompt | A resposta do chat. O arquivo do produto não muda. A pessoa lê os cinco blocos que a CLI obedeceu | ⏳ |
 | `aula-3.1-fim` | 3.1 | M3 contexto | O `AGENTS.md` ganha a lista do que ler: `overlap.ts` e o teste das 10:00. O repositório inteiro fica de fora | ⏳ |
 | `aula-3.2-fim` | 3.2 | M3 contexto | Duas perguntas no chat: com o teste, e pedindo o repositório inteiro. Um MCP é nomeado como fonte que não é arquivo. Não se cria servidor | ⏳ |
-| `aula-4.1-fim` | 4.1 | M4 harness | O chat edita sozinho. Nasce `apps/agent`: `apply_patch` e o teste da tarefa. A CLI não escreve no repo. O nome do script é `pnpm autofix` | ⏳ |
-| `aula-4.2-fim` | 4.2 | M4 harness | `pnpm autofix round --task=bug-001`. Uma volta. O harness grava o patch e roda o teste. Sem segunda chamada | ⏳ |
-| `aula-5.1-fim` | 5.1 | M5 loop | A saída do teste entra no próximo turno | ⏳ |
-| `aula-5.2-fim` | 5.2 | M5 loop | `pnpm autofix run --task=bug-001`. Até o teste passar ou três voltas | ⏳ |
-| `aula-6.1-fim` | 6.1 | M6 governança | Passou, três voltas, ou `escalate` na taxa de cancelamento, sem editar | ⏳ |
-| `aula-6.2-fim` = `final` | 6.2 | M6 governança | Caminho fora da tarefa não aplica. A issue que pede o `.env` não é lida | ⏳ |
+| `aula-4.1-fim` | 4.1 | M4 harness | Parte de `aula-4.1-inicio` (só o `cli.ts` de uso). O prompt de `docs/prompts/construir-autofix.md` cria a forma inicial: `apply_patch`, sensor e `round`. A CLI não escreve no repo. O nome do script é `pnpm autofix` | ⏳ |
+| `aula-4.2-fim` | 4.2 | M4 harness | `pnpm autofix round --task=bug-001`. Uma volta. O harness grava o patch e roda o teste. As 10:00 continuam vermelhas | ⏳ |
+| `aula-5.1-fim` | 5.1 | M5 loop | A saída do teste entra no próximo turno. Duas voltas fixas | ⏳ |
+| `aula-5.2-fim` | 5.2 | M5 loop | `pnpm autofix run --task=bug-001`. `while` até o teste passar ou três voltas, com o motivo da parada | ⏳ |
+| `aula-6.1-fim` | 6.1 | M6 governança | Passou, três voltas, ou `escalate` na taxa de cancelamento, sem editar. Escalar não aplica patch da mesma resposta | ⏳ |
+| `aula-6.2-fim` = `final` | 6.2 | M6 governança | Caminho fora da tarefa não aplica. A issue que pede o `.env` não é lida. Antes: `pnpm break --bug=bug-003` | ⏳ |
+
+**Aula extra do módulo 3 (Linear).** O chat lê a issue pelo MCP e escreve `inbox/AGE-1.md`. O `evals/linear-map.json` mapeia `AGE-1` para `bug-001`; o harness consome com `--issue` a partir do 4.2. O MCP fica no chat: o loop não ganha cliente, rede nem segredo.
 
 Fora do mapa: sala de controle, webhook, máquina de estados, Checker, juiz, pass@k, sandbox, pull request, `improve`, página de custos, servidor MCP criado na aula.

@@ -47,12 +47,22 @@ Usuários do seed (senha `agendai123`):
 | `pnpm check:tasks` | Valida todas as tarefas: o bug faz os graders falharem e a solução de referência faz passar. `--task=<id>` roda uma só; `--skip-db` pula o banco |
 | `pnpm autofix round --task=bug-001` | Módulo 4. Uma volta no grok, depois o teste da tarefa. Antes: `pnpm break --bug=bug-001` |
 | `pnpm autofix run --task=bug-001` | M5. O grok em loop até o teste passar ou o teto. Antes: `pnpm break --bug=bug-001` |
-| `pnpm autofix run --issue=inbox/abc-1.md` | A issue (Linear, GitHub) mapeia para uma tarefa; o eval continua sendo o oráculo |
+| `pnpm autofix run --issue=inbox/age-1.md` | A issue (Linear, GitHub) mapeia para uma tarefa; o eval continua sendo o oráculo |
 | `pnpm autofix run --task=escalate-001` | M6. Devolve a issue da taxa sem editar arquivo |
 | `pnpm autofix round --task=security-001` | M6. O patch em `.env` é recusado. Antes: `pnpm break --bug=bug-003` |
 | `--provider=replay` | Em qualquer `autofix`: roda sem CLI logada e sem chave |
 
 O mapa vídeo → arquivo está em [`docs/agent.md`](docs/agent.md).
+
+## Construir o harness do zero
+
+A tag `aula-4.1-inicio` tem só o `cli.ts` de uso. O guia [`docs/prompts/construir-autofix.md`](docs/prompts/construir-autofix.md) traz o prompt da forma inicial (uma volta, sem loop) e a escada dos vídeos 5.1 a 6.2. A implementação de referência fica em `checkpoint/modulo-4`.
+
+```bash
+git switch -c meu-autofix aula-4.1-inicio
+```
+
+Exercício opcional depois do 5.2: [`docs/exercicios/loop.md`](docs/exercicios/loop.md).
 
 ## Catálogo de tarefas
 

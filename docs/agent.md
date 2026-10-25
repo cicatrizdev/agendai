@@ -94,3 +94,4 @@ O `replay` é um take gravado (`src/fixtures/bug-001.ts`), escolhido por trechos
 Runner de evals com `pass@k`, sandbox, webhook, aprovações, Checker, juiz e cliente MCP dentro do harness. As pastas que sobraram de versões anteriores não são aula.
 
 Exercício opcional do loop: [`exercicios/loop.md`](exercicios/loop.md).
+Construir do zero: [`prompts/construir-autofix.md`](prompts/construir-autofix.md) e a tag `aula-4.1-inicio`.

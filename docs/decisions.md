@@ -167,3 +167,25 @@ O mapa vive em `docs/course-map.md`. As decisões 18, 19 e 27 continuam válidas
 - **Contexto:** `pnpm autofix` aparecia antes da pessoa saber o que o script é. O instrutor e o estudante travavam na mesma pergunta: de onde vem esse comando.
 - **Decisão:** módulo 1 é o único laboratório, e já foi gravado. A pasta `aulas/` saiu do repositório. Módulos 2 e 3 são um chat com a CLI e um `AGENTS.md` (prompt, depois contexto). MCP é nomeado como fonte que não é arquivo. Não se cria servidor. O `apps/agent` e o nome `pnpm autofix` entram no módulo 4. M5 é o loop desse script. M6 é a governança.
 - **Descartada:** começar o módulo 2 rodando `pnpm autofix ask`. Construir um servidor MCP na aula.
+
+## Versão E — o harness construído
+
+### 32. O eval é a única fonte da tarefa
+- **Contexto:** `apps/agent/src/tasks.ts` mantinha um catálogo paralelo ao `evals/tasks`. O `security-001` já divergia do yaml (prompt diferente, sem `setup.bug`).
+- **Decisão:** `loadTask` lê `evals/tasks/<id>/task.yaml`; `report` entra no yaml. Só as famílias `bug`, `security` e `escalate` rodam no harness de sala; `build`, `upgrade` e `db` apontam para o `check:tasks`.
+- **Descartada:** manter os dois catálogos e sincronizar à mão.
+
+### 33. A issue vem do tracker; o oráculo fica no eval
+- **Contexto:** a aula extra do módulo 3 liga o MCP do Linear.
+- **Decisão:** o chat lê a issue e escreve `inbox/`. O harness aceita `--issue` com `task:` ou `ticket:`; o ticket é resolvido por `evals/linear-map.json`. Sem mapeamento, recusa. O MCP não entra no processo do loop.
+- **Descartada:** cliente MCP dentro de `apps/agent` (rede, segredo, allowlist) e issue sem tarefa mapeada.
+
+### 34. O harness nasce no vídeo, não vem pronto
+- **Contexto:** entregar o agente final faz o programa parecer mágico e o aluno não vê o loop nascer.
+- **Decisão:** a tag `aula-4.1-inicio` tem só o `cli.ts` de uso. O prompt de `docs/prompts/construir-autofix.md` cria a forma inicial (uma volta, sem loop); o `while` nasce no 5.2. A referência fica em `checkpoint/modulo-4`.
+- **Descartada:** construir as 1.000 linhas ao vivo; e entregar o agente final sem estado inicial.
+
+### 35. `ask` e `contexts` saem; escalar não aplica patch
+- **Contexto:** os módulos 2 e 3 são chat; nenhum vídeo roda `pnpm autofix ask`. E o `runLoop` executava todas as tool calls antes de ver o `escalate`.
+- **Decisão:** removem-se `contexts.ts`, `runAsk` e `runContexts`. `runLoop` filtra as tool calls quando a resposta traz `escalate`; `run_tests` recusa tarefa sem sensor. `security-001` herda `setup.bug: bug-003`, então o demo do 6.2 começa com `pnpm break --bug=bug-003`.
+- **Descartada:** manter o código morto "para quem quiser" e confiar no filtro de caminho para garantir o invariante de escalada.
