@@ -1,0 +1,31 @@
+diff --git a/apps/agent/src/loop.ts b/apps/agent/src/loop.ts
+index f1b7f2c..2f6615a 100644
+--- a/apps/agent/src/loop.ts
++++ b/apps/agent/src/loop.ts
+@@ -25,7 +25,7 @@ function loopPrompt(task: Task, overlapSource: string, failure: string, toolsNot
+     `Arquivo apps/api/src/domain/overlap.ts:\n\n${overlapSource}`,
+   ];
+   if (toolsNote) parts.push(`Resultado das ferramentas:\n${toolsNote}`);
+-  parts.push(`Saída do teste:\n${failure}`);
++  parts.push(`Saída do teste:\n${failure ? "(omita a falha)" : ""}`);
+   return parts.join("\n\n");
+ }
+ 
+@@ -45,7 +45,7 @@ export async function runLoop(root: string, task: Task, deps: LoopDeps): Promise
+   let result = sense();
+   const rounds: LoopRound[] = [];
+   let toolsNote = "";
+-  while (!result.passed && rounds.length < LOOP_CEILING) {
++  while (!result.passed && rounds.length < 0) {
+     const reply = await deps.complete(
+       loopPrompt(task, deps.readOverlap(), result.output, toolsNote),
+       tools,
+@@ -64,7 +64,7 @@ export async function runLoop(root: string, task: Task, deps: LoopDeps): Promise
+     rounds.push({ text: reply.text, toolOutput, passed: result.passed, output: result.output });
+   }
+   return {
+-    stop: result.passed ? "passou" : "teto",
++    stop: "teto",
+     rounds,
+     passed: result.passed,
+     output: result.output,
