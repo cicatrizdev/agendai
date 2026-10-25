@@ -106,6 +106,49 @@ describe("runLoop", () => {
     expect(result.stop).toBe("teto");
   });
 
+  it("puts the test output in the next prompt", async () => {
+    const { root, file } = sandbox();
+    const prompts: string[] = [];
+    const result = await runLoop(root, loadTask("bug-001"), {
+      complete: async (prompt) => {
+        prompts.push(prompt);
+        return replayBug001(prompt);
+      },
+      readOverlap: () => readFileSync(file, "utf8"),
+      sensor: senseFile(file),
+    });
+    expect(result.stop).toBe("passou");
+    expect(prompts[0]).toContain("10:00 still overlaps");
+    expect(prompts[1]).toContain("Resultado das ferramentas");
+    expect(prompts[1]).toContain("10:00 still overlaps");
+  });
+
+  it("escalates without applying a patch from the same reply", async () => {
+    const { root, file } = sandbox();
+    const before = readFileSync(file, "utf8");
+    const result = await runLoop(root, loadTask("escalate-001"), {
+      complete: async () => ({
+        text: "devolvo a issue",
+        usage: { inputTokens: 1, outputTokens: 1 },
+        calls: [
+          {
+            name: "apply_patch",
+            input: {
+              path: overlapPath,
+              old_string: "at least one instant.",
+              new_string: "at least one moment.",
+            },
+          },
+          { name: "escalate", input: { reason: "decisão de produto" } },
+        ],
+      }),
+      readOverlap: () => readFileSync(file, "utf8"),
+      sensor: senseFile(file),
+    });
+    expect(result.stop).toBe("escalado");
+    expect(readFileSync(file, "utf8")).toBe(before);
+  });
+
   it("replay second prompt applies the real fix", async () => {
     const first = replayBug001("Use apply_patch no arquivo do domínio.");
     const second = replayBug001("Resultado das ferramentas:\npatch aplicado");

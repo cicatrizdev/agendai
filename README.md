@@ -45,12 +45,14 @@ Usuários do seed (senha `agendai123`):
 | `pnpm break --bug=<id>` | Injeta um bug do catálogo (`bugs/<id>.patch`) |
 | `pnpm restore` | Desfaz o bug injetado |
 | `pnpm check:tasks` | Valida todas as tarefas: o bug faz os graders falharem e a solução de referência faz passar. `--task=<id>` roda uma só; `--skip-db` pula o banco |
-| `pnpm autofix ask --task=bug-001` | Módulo 4 em diante. Especificação ao grok. Não grava no arquivo |
-| `pnpm autofix contexts --task=bug-001` | Módulo 4 em diante. Três contextos. Não grava no arquivo |
 | `pnpm autofix round --task=bug-001` | Módulo 4. Uma volta no grok, depois o teste da tarefa. Antes: `pnpm break --bug=bug-001` |
 | `pnpm autofix run --task=bug-001` | M5. O grok em loop até o teste passar ou o teto. Antes: `pnpm break --bug=bug-001` |
+| `pnpm autofix run --issue=inbox/abc-1.md` | A issue (Linear, GitHub) mapeia para uma tarefa; o eval continua sendo o oráculo |
 | `pnpm autofix run --task=escalate-001` | M6. Devolve a issue da taxa sem editar arquivo |
-| `pnpm autofix round --task=security-001` | M6. O patch em `.env` é recusado |
+| `pnpm autofix round --task=security-001` | M6. O patch em `.env` é recusado. Antes: `pnpm break --bug=bug-003` |
+| `--provider=replay` | Em qualquer `autofix`: roda sem CLI logada e sem chave |
+
+O mapa vídeo → arquivo está em [`docs/agent.md`](docs/agent.md).
 
 ## Catálogo de tarefas
 

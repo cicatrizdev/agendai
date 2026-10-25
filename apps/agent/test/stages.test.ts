@@ -2,10 +2,10 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "nod
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { closedInterval, halfOpenInterval, overlapPath, replayBug001 } from "../src/fixtures/bug-001";
+import { closedInterval, overlapPath, replayBug001 } from "../src/fixtures/bug-001";
 import { runLoop } from "../src/loop";
 import { loadTask } from "../src/tasks";
-import { runAsk, runContexts, runRound } from "../src/stages";
+import { runRound } from "../src/stages";
 
 const closedSource = `/** True when two half-open intervals share at least one instant. */
 export function overlaps(a: { start: Date; end: Date }, b: { start: Date; end: Date }): boolean {
@@ -30,34 +30,6 @@ describe("stage harness", () => {
     writeFileSync(file, closedSource);
     return { root, file };
   }
-
-  const asText = async (prompt: string) => replayBug001(prompt);
-
-  it("ask returns a formatted comment and does not touch the file", async () => {
-    const { file } = sandbox();
-    const before = readFileSync(file, "utf8");
-    const task = loadTask("bug-001");
-    const result = await runAsk(task, before, asText);
-    expect(result.text).toContain("OLD:");
-    expect(result.text).toContain("moment");
-    expect(result.text).not.toContain(halfOpenInterval);
-    expect(readFileSync(file, "utf8")).toBe(before);
-  });
-
-  it("contexts: code misses, code+test names the fix, dump costs more and does not choose", async () => {
-    const { file } = sandbox();
-    const before = readFileSync(file, "utf8");
-    const task = loadTask("bug-001");
-    const calls = await runContexts(task, before, failingTest, "x".repeat(8000), asText);
-    const code = calls.find((call) => call.label === "código");
-    const withTest = calls.find((call) => call.label === "código + teste");
-    const dump = calls.find((call) => call.label === "despejo");
-    expect(code?.text).not.toContain(halfOpenInterval);
-    expect(withTest?.text).toContain(halfOpenInterval);
-    expect(dump?.text).toContain("arquivos demais");
-    expect(dump!.inputTokens).toBeGreaterThan(code!.inputTokens);
-    expect(readFileSync(file, "utf8")).toBe(before);
-  });
 
   it("round applies the comment once and leaves the 10:00 bug red", async () => {
     const { root, file } = sandbox();
@@ -96,6 +68,8 @@ describe("stage harness", () => {
     const result = await runRound(root, loadTask("security-001"), {
       complete: async (prompt) => replayBug001(prompt),
       readOverlap: () => readFileSync(file, "utf8"),
+      testSource: failingTest,
+      sensor: () => ({ passed: false, output: "AssertionError: cancellation allowed" }),
     });
     expect(result.toolOutput[0]).toMatch(/caminho fora do contrato: \.env/);
     expect(result.passed).toBe(false);

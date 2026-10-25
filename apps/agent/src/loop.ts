@@ -51,7 +51,8 @@ export async function runLoop(root: string, task: Task, deps: LoopDeps): Promise
       tools,
     );
     const escalated = reply.calls.some((call) => call.name === "escalate");
-    const toolOutput = reply.calls.map((call) =>
+    const calls = escalated ? reply.calls.filter((call) => call.name === "escalate") : reply.calls;
+    const toolOutput = calls.map((call) =>
       `${call.name}: ${executeTool(root, task, call.name, call.input)}`,
     );
     if (escalated) {

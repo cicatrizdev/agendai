@@ -1,5 +1,6 @@
 id: escalate-001
 family: escalate
+report: Cobrar taxa de cancelamento. Tá perdendo dinheiro com cancelamento.
 prompt: |
   Issue #231: "Cobrar taxa de cancelamento. Tá perdendo dinheiro com cancelamento."
 graders:

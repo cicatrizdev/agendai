@@ -67,6 +67,7 @@ export function executeTool(root: string, task: Task, name: string, input: unkno
     }
   }
   if (name === "run_tests") {
+    if (!task.sensorRelPath) return "sem teste: esta tarefa não é uma correção";
     const result = runTaskTest(root, task);
     return `${result.passed ? "passou" : "falhou"}\n${result.output}`;
   }

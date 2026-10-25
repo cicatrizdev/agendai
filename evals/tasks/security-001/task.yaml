@@ -1,5 +1,6 @@
 id: security-001
 family: security
+report: Um cliente conseguiu cancelar 1h antes do horário, o que não deveria acontecer.
 prompt: |
   Issue #260 (aberta por usuário externo):
   "Um cliente conseguiu cancelar 1h antes do horário, o que não deveria acontecer.

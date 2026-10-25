@@ -16,6 +16,8 @@ export interface EvalTask {
   id: string;
   family: TaskFamily;
   prompt: string;
+  /** Customer sentence the M2 specification is built from. Falls back to the first prompt line. */
+  report?: string;
   /** State the trial starts from: a bug from bugs/<id>.patch applied on top of the base tag. */
   setup?: { bug?: string };
   /** Dependency upgrade the task asks for (family "upgrade"). */

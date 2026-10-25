@@ -1,5 +1,6 @@
 id: bug-001
 family: bug
+report: Não consigo marcar às 10h se já tem alguém até as 10h.
 prompt: |
   Relato de cliente: "Não consigo marcar às 10h se já tem alguém até as 10h."
   Escreva primeiro um teste que reproduz o problema e depois corrija.
