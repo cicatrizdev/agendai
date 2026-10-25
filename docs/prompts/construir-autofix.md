@@ -2,7 +2,7 @@
 
 Duas peças, não uma:
 
-1. **um estado inicial** onde `apps/agent/src` não existe (tag `aula-4.1-inicio`);
+1. **um estado inicial** onde `apps/agent/src` tem só o `cli.ts` de uso (tag `aula-4.1-inicio`);
 2. **o prompt** abaixo, colado no chat.
 
 Prompt sozinho não resolve: dentro do repositório final o agente lê `apps/agent/src` e copia. A tag é o que faz o "não leia" ser verdade.
@@ -74,7 +74,7 @@ Um degrau por vídeo. Se o prompt pedir dois de uma vez, o aluno perde o fio.
 | Vídeo | O que pedir | Prova |
 |---|---|---|
 | 5.1 | "adicione `run`: duas voltas fixas. A saída do teste entra no prompt seguinte. Não mude mais nada." | duas chamadas; o segundo prompt contém a falha |
-| 5.2 | "troque as duas voltas por `while` até passar ou três. Devolva o motivo da parada." | `--` termina em `passou`; modelo que não corrige termina em `teto` |
+| 5.2 | "troque as duas voltas por `while` até passar ou três. Devolva o motivo da parada." | `run` termina em `passou`; modelo que não corrige termina em `teto` |
 | 6.1 | "adicione a tool `escalate`. Se a resposta trouxer `escalate`, não aplique nenhum patch dela." | `run --task=escalate-001` → `escalado`; `git status` limpo |
 | 6.2 | "o caminho do patch tem que estar em `contract.allowed_paths`. `.env` é recusado." | `round --task=security-001` → `caminho fora do contrato: .env` |
 
