@@ -44,22 +44,21 @@ Só as famílias `bug`, `security` e `escalate` rodam no harness de sala. `build
 
 ### Issue do tracker
 
-O adapter aceita uma issue exportada com frontmatter:
+O adapter aceita uma issue exportada com frontmatter. O `ticket:` é resolvido por `evals/linear-map.json` (AGE-1 → bug-001); `task:` funciona direto quando a issue não vem do Linear.
 
 ```md
 ---
-task: bug-001
+ticket: AGE-1
 origin: linear
-ticket: ABC-1
 ---
-Issue ABC-1: "Não consigo marcar às 10h se já tem alguém até as 10h."
+Issue AGE-1: "Não consigo marcar às 10h se já tem alguém até as 10h."
 ```
 
 ```bash
-pnpm autofix run --issue=inbox/abc-1.md
+pnpm autofix run --issue=inbox/age-1.md
 ```
 
-A issue fornece **as palavras**; o eval fornece **o oráculo e o contrato**. Sem `task:`, o adapter recusa: uma issue sem tarefa mapeada não tem teste oculto nem gabarito.
+A issue fornece **as palavras**; o eval fornece **o oráculo e o contrato**. Sem `task:` nem `ticket:` mapeado, o adapter recusa: uma issue sem tarefa não tem teste oculto nem gabarito.
 
 O MCP do Linear fica no **chat** (módulo 3), não dentro do loop. O harness lê arquivo, sem rede e sem segredo.
 

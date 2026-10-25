@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from "node:fs";
-import { relative, resolve } from "node:path";
+import { join, relative, resolve } from "node:path";
 import { repoRoot } from "./env";
 import { loadTask, type Task } from "./tasks";
 
@@ -7,6 +7,24 @@ export interface Issue {
   /** Issue file, relative to the repository root. */
   file: string;
   task: Task;
+}
+
+interface LinearMap {
+  issues: Record<string, { identifier: string }>;
+}
+
+const LINEAR_MAP = "evals/linear-map.json";
+
+/** Tracker identifier (AGE-1) to catalog task id (bug-001). */
+function taskFromMap(ticket: string, root: string): string {
+  const file = join(root, LINEAR_MAP);
+  if (!existsSync(file)) {
+    throw new Error(`ticket ${ticket} sem "task:" e sem ${LINEAR_MAP}`);
+  }
+  const map = JSON.parse(readFileSync(file, "utf8")) as LinearMap;
+  const hit = Object.entries(map.issues).find(([, issue]) => issue.identifier === ticket);
+  if (!hit) throw new Error(`ticket ${ticket} não está em ${LINEAR_MAP}`);
+  return hit[0];
 }
 
 function frontmatter(text: string): { meta: Map<string, string>; body: string } {
@@ -35,9 +53,12 @@ export function loadIssue(file: string, root = repoRoot()): Issue {
   const path = resolve(root, file);
   if (!existsSync(path)) throw new Error(`issue não encontrada: ${file}`);
   const { meta, body } = frontmatter(readFileSync(path, "utf8"));
-  const id = meta.get("task") ?? "";
+  const ticket = meta.get("ticket") ?? meta.get("linear") ?? "";
+  const id = meta.get("task") || (ticket ? taskFromMap(ticket, root) : "");
   if (!id) {
-    throw new Error(`a issue ${file} não declara "task:" no frontmatter. Sem task não há oráculo.`);
+    throw new Error(
+      `a issue ${file} não declara "task:" nem um "ticket:" mapeado. Sem task não há oráculo.`,
+    );
   }
   if (!body) throw new Error(`a issue ${file} está vazia.`);
   const task = loadTask(id, root);

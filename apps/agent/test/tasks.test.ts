@@ -67,6 +67,20 @@ describe("issue adapter", () => {
     expect(issue.task.sensorRelPath).toBe("apps/api/test/hidden/overlap-boundary.test.ts");
   });
 
+  it("resolves a Linear ticket through the map", () => {
+    const file = issueFile(
+      ["---", "ticket: AGE-1", "origin: linear", "---", 'Issue AGE-1: "some às 10h"'].join("\n"),
+    );
+    const issue = loadIssue(file);
+    expect(issue.task.id).toBe("bug-001");
+    expect(issue.task.origin).toBe("issue");
+  });
+
+  it("refuses a ticket that is not in the map", () => {
+    const file = issueFile(["---", "ticket: AGE-999", "---", "texto"].join("\n"));
+    expect(() => loadIssue(file)).toThrow(/não está em evals\/linear-map.json/);
+  });
+
   it("refuses an issue without a task mapping", () => {
     const file = issueFile("Issue ABC-2: sem frontmatter\n");
     expect(() => loadIssue(file)).toThrow(/não declara "task:"/);
