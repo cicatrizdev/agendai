@@ -1,6 +1,6 @@
 # Exercício: os três buracos do loop
 
-O `apps/agent` vem pronto porque o curso abre arquivo, não digita biblioteca. Este exercício é a exceção: você reconstrói o miolo do loop e o teste diz se acertou.
+O harness é construído no módulo 4. Este exercício é o aprofundamento do 5.2: você reconstrói o miolo do loop e o teste diz se acertou.
 
 **Oráculo:** `apps/agent/test/loop.test.ts`. Não edite o teste.
 
