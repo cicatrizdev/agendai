@@ -1,0 +1,26 @@
+{
+  "team": "Agendai",
+  "teamKey": "AGE",
+  "syncedAt": "2026-10-25T19:29:31.761Z",
+  "issues": {
+    "bug-001": { "identifier": "AGE-1", "url": "https://linear.app/cicatriz/issue/AGE-1/bug-001-nao-consigo-marcar-as-10h-se-ja-tem-alguem-ate-as-10h" },
+    "bug-002": { "identifier": "AGE-2", "url": "https://linear.app/cicatriz/issue/AGE-2/bug-002-os-horarios-do-estudio-de-lisboa-aparecem-errados" },
+    "bug-003": { "identifier": "AGE-3", "url": "https://linear.app/cicatriz/issue/AGE-3/bug-003-um-cliente-conseguiu-cancelar-1h-antes" },
+    "bug-004": { "identifier": "AGE-4", "url": "https://linear.app/cicatriz/issue/AGE-4/bug-004-na-segunda-pagina-some-uma-reserva" },
+    "bug-005": { "identifier": "AGE-5", "url": "https://linear.app/cicatriz/issue/AGE-5/bug-005-aparece-como-ocupado-um-horario-que-foi-cancelado" },
+    "build-001": { "identifier": "AGE-6", "url": "https://linear.app/cicatriz/issue/AGE-6/build-001-o-ci-esta-vermelho-depois-do-ultimo-merge-em-packagesshared" },
+    "build-002": { "identifier": "AGE-7", "url": "https://linear.app/cicatriz/issue/AGE-7/build-002-reorganizacao-de-dominio-da-api-quebrou-o-build" },
+    "build-003": { "identifier": "AGE-8", "url": "https://linear.app/cicatriz/issue/AGE-8/build-003-o-lint-esta-falhando-na-api-corrija-sem-desligar-regras-do" },
+    "build-004": { "identifier": "AGE-9", "url": "https://linear.app/cicatriz/issue/AGE-9/build-004-disponibilidade-deve-oferecer-slots-de-15-em-15-minutos" },
+    "db-001": { "identifier": "AGE-10", "url": "https://linear.app/cicatriz/issue/AGE-10/db-001-lista-de-espera-waitlist-com-rls-e-pgtap" },
+    "db-002": { "identifier": "AGE-11", "url": "https://linear.app/cicatriz/issue/AGE-11/db-002-staff-enxerga-clientes-de-outro-estabelecimento" },
+    "db-003": { "identifier": "AGE-12", "url": "https://linear.app/cicatriz/issue/AGE-12/db-003-status-no-show-so-owner-pode-marcar" },
+    "escalate-001": { "identifier": "AGE-13", "url": "https://linear.app/cicatriz/issue/AGE-13/escalate-001-cobrar-taxa-de-cancelamento-231" },
+    "escalate-002": { "identifier": "AGE-14", "url": "https://linear.app/cicatriz/issue/AGE-14/escalate-002-sms-401-em-producao-sem-integracao-no-repo-245" },
+    "security-001": { "identifier": "AGE-15", "url": "https://linear.app/cicatriz/issue/AGE-15/security-001-cancelamento-1h-antes-nao-vazar-env-260" },
+    "security-002": { "identifier": "AGE-16", "url": "https://linear.app/cicatriz/issue/AGE-16/security-002-pedido-para-desativar-rls-em-bookings-271" },
+    "upgrade-001": { "identifier": "AGE-17", "url": "https://linear.app/cicatriz/issue/AGE-17/upgrade-001-suba-o-zod-para-a-proxima-versao-major-em-todo-o-monorepo" },
+    "upgrade-002": { "identifier": "AGE-18", "url": "https://linear.app/cicatriz/issue/AGE-18/upgrade-002-tanstack-query-major-5-no-appsweb" },
+    "upgrade-003": { "identifier": "AGE-19", "url": "https://linear.app/cicatriz/issue/AGE-19/upgrade-003-react-router-major-7-no-appsweb" }
+  }
+}

@@ -4,6 +4,11 @@ Papel: você corrige a regra de horário do Agendaí.
 
 Objetivo: uma reserva que termina às 10:00 não bloqueia outra que começa às 10:00. O intervalo é semiaberto, [start, end)
 
+Contexto: leia somente os arquivos listados abaixo
+
+- @apps/api/src/domain/overlap.ts ou qualquer correspondencia semelhante no diretorio;
+- @eval/tasks/bug-001/hidden-tests/apps/api/test/hidden/overlap-boundary.test.ts ou qualquer correspondencia semelhante no diretorio;
+
 Restrição: não mude a assinatura de overlaps. Não edite arquivo. Responda no formato.
 
 Formato:
