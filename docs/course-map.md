@@ -1,30 +1,30 @@
-# Mapa do curso
+# Mapa do curso — Versão F
 
-Versão E. Seis módulos. O módulo 1 é o único laboratório. Do 2 ao 3 a pessoa fala com a CLI, como num chat, e escreve o arquivo que ela lê. O programa `pnpm autofix` nasce no módulo 4, quando o chat sozinho não segura a ferramenta.
+Seis módulos. O laboratório é só o 1, já gravado. Módulos 2 e 3 no chat, com `AGENTS.md`. A partir do 4.1 o mesmo grok edita. O `pnpm autofix` nasce no 4.3: harness em volta do agente, não um segundo agente. Módulos 4, 5 e 6 têm quatro aulas cada.
 
-Cada tag marca o fim de um vídeo. A tag `aula-X.Y-inicio` é a `-fim` do vídeo anterior. O vídeo 1.1 é gravado no repositório do ato e não tem tag: tour do Agendaí e o placar do laboratório.
+O fio: uma reserva 09:00–10:00 não bloqueia outra 10:00–11:00 (`overlaps`, intervalo semiaberto).
 
-Status: ✅ gravável · ⏳ ainda não fatiada para a câmera.
+| Aula | Objeto | Prova na tela |
+|---|---|---|
+| 2.1 | Skill vs `AGENTS.md` | fica o `AGENTS.md` |
+| 2.2 | o arquivo que a CLI lê | pedido curto no chat |
+| 2.3 | a resposta `OLD:` / `NEW:` | `overlap.ts` com `<=` |
+| 3.1 | lista de arquivos | teste oculto das 10:00 |
+| 3.2 | contexto certo vs despejo | as duas respostas |
+| 3.3 | issue do Linear | `inbox/AGE-1.md` + `linear-map.json` |
+| 4.1 | o chat edita | `overlap.ts` muda |
+| 4.2 | a tarefa versionada | `task.yaml` + `pnpm break` |
+| 4.3 | uma sessão unattended | `pnpm autofix round --task=bug-001` |
+| 4.4 | o sensor julga | `# teste` passou ou falhou |
+| 5.1 | duas sessões, erro de volta | segundo prompt tem `Saída do teste:` |
+| 5.2 | `while` até passar ou três | `# parada passou` ou `teto` |
+| 5.3 | o mesmo harness | `run --task=bug-002` |
+| 5.4 | o catálogo | `evals/tasks/` + `check:tasks` |
+| 6.1 | devolver a issue | `run --task=escalate-001` → `escalado` |
+| 6.2 | contrato de caminho | `round --task=security-001` → recusa `.env` |
+| 6.3 | os quatro finais | passou, teto, escalado, recusado |
+| 6.4 | o ticket no harness | `run --issue=inbox/AGE-1.md` |
 
-| Tag | Vídeo | Módulo | O que a aula faz | Status |
-|---|---|---|---|---|
-| `inicio-curso` | — | — | Agendaí verde, catálogo de tarefas, `break`/`restore`. Sem `AGENTS.md`. O código de `apps/agent` fica fora da câmera até o módulo 4 | ✅ |
-| `aula-1.2-fim` | 1.2 | M1 pilares | Prompt vago e especificação, em replay | ✅ |
-| `aula-1.3-fim` | 1.3 | M1 pilares | Três contextos. Comparação pelo tamanho da entrada | ✅ |
-| `aula-1.4-fim` | 1.4 | M1 pilares | Uma rodada de ferramenta. As 10:00 continuam vermelhas | ✅ |
-| `aula-1.5-fim` | 1.5 | M1 pilares | O erro volta. Mini-placar das quatro camadas | ✅ |
-| `aula-2.1-fim` | 2.1 | M2 prompt | Skill contra `AGENTS.md`. A skill só entra quando a tarefa combina. O `AGENTS.md` entra em toda conversa do repositório. A aula fica com o `AGENTS.md` | ⏳ |
-| `aula-2.2-fim` | 2.2 | M2 prompt | Cria `AGENTS.md` com papel, objetivo, restrição, formato e o exemplo das 10:00. No chat: leia esse arquivo e o `overlap.ts`. Não edite | ⏳ |
-| `aula-2.3-fim` | 2.3 | M2 prompt | A resposta do chat. O arquivo do produto não muda. A pessoa lê os cinco blocos que a CLI obedeceu | ⏳ |
-| `aula-3.1-fim` | 3.1 | M3 contexto | O `AGENTS.md` ganha a lista do que ler: `overlap.ts` e o teste das 10:00. O repositório inteiro fica de fora | ⏳ |
-| `aula-3.2-fim` | 3.2 | M3 contexto | Duas perguntas no chat: com o teste, e pedindo o repositório inteiro. Um MCP é nomeado como fonte que não é arquivo. Não se cria servidor | ⏳ |
-| `aula-4.1-fim` | 4.1 | M4 harness | Parte de `aula-4.1-inicio` (só o `cli.ts` de uso). O prompt de `docs/prompts/construir-autofix.md` cria a forma inicial: `apply_patch`, sensor e `round`. A CLI não escreve no repo. O nome do script é `pnpm autofix` | ⏳ |
-| `aula-4.2-fim` | 4.2 | M4 harness | `pnpm autofix round --task=bug-001`. Uma volta. O harness grava o patch e roda o teste. As 10:00 continuam vermelhas | ⏳ |
-| `aula-5.1-fim` | 5.1 | M5 loop | A saída do teste entra no próximo turno. Duas voltas fixas | ⏳ |
-| `aula-5.2-fim` | 5.2 | M5 loop | `pnpm autofix run --task=bug-001`. `while` até o teste passar ou três voltas, com o motivo da parada | ⏳ |
-| `aula-6.1-fim` | 6.1 | M6 governança | Passou, três voltas, ou `escalate` na taxa de cancelamento, sem editar. Escalar não aplica patch da mesma resposta | ⏳ |
-| `aula-6.2-fim` = `final` | 6.2 | M6 governança | Caminho fora da tarefa não aplica. A issue que pede o `.env` não é lida. Antes: `pnpm break --bug=bug-003` | ⏳ |
-
-**Aula extra do módulo 3 (Linear).** O chat lê a issue pelo MCP e escreve `inbox/AGE-1.md`. O `evals/linear-map.json` mapeia `AGE-1` para `bug-001`; o harness consome com `--issue` a partir do 4.2. O MCP fica no chat: o loop não ganha cliente, rede nem segredo.
-
-Fora do mapa: sala de controle, webhook, máquina de estados, Checker, juiz, pass@k, sandbox, pull request, `improve`, página de custos, servidor MCP criado na aula.
+Guia de gravação (local): `docs/colinha.md`.
+Prompt de construção: `docs/prompts/construir-autofix.md`.
+Tag de partida do harness: `aula-4.1-inicio`.

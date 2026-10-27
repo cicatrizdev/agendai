@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, rmSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { repoRoot } from "./env";
@@ -23,10 +23,6 @@ function printResult(result: LoopResult, hasTest = true): void {
     if (hasTest) console.log(`\n# teste\n${round.passed ? "passou" : "falhou"}`);
   }
   console.log(`\n# parada\n${result.stop}`);
-}
-
-function overlapPath(root: string): string {
-  return resolve(root, "apps/api/src/domain/overlap.ts");
 }
 
 /** `pnpm break` records the injected bug; the source string is not the state. */
@@ -61,40 +57,14 @@ async function runOnce(root: string, task: Task): Promise<LoopResult> {
   }
 }
 
-const RUNS = 5;
-
-async function scoreboard(root: string, task: Task): Promise<void> {
-  if (!task.sensorRelPath) throw new Error(`a tarefa ${task.id} não tem teste; o placar não se aplica`);
-  assertBugApplied(root, task);
-  const original = readFileSync(overlapPath(root), "utf8");
-  const uninstall = installSensor(root, task);
-  let passed = 0;
-  try {
-    for (let trial = 0; trial < RUNS; trial += 1) {
-      writeFileSync(overlapPath(root), original);
-      const result = await runLoop(root, task, {
-        complete: defaultComplete(),
-        readOverlap: () => readFileSync(overlapPath(root), "utf8"),
-      });
-      if (result.passed) passed += 1;
-    }
-  } finally {
-    writeFileSync(overlapPath(root), original);
-    uninstall();
-  }
-  console.log(`\n# mini-placar\n${task.id.padEnd(10)} ${passed}/${RUNS}`);
-  console.log("o bug não mudou; o arquivo é o do produto. a taxa é a desta execução.");
-}
-
 function usage(): never {
   console.error(
     [
       "Uso: pnpm autofix round --task=bug-001 [--provider=replay]",
       "     pnpm autofix run --task=bug-001 [--provider=replay]",
-      "     pnpm autofix run --issue=inbox/abc-1.md",
+      "     pnpm autofix run --issue=inbox/AGE-1.md",
       "     pnpm autofix run --task=escalate-001",
       "     pnpm autofix round --task=security-001",
-      "     pnpm autofix scoreboard --task=bug-001",
     ].join("\n"),
   );
   process.exit(1);
@@ -107,7 +77,7 @@ async function main(): Promise<void> {
   if (!existsSync(resolve(root, "pnpm-workspace.yaml"))) {
     throw new Error("rode o autofix na raiz do repositório");
   }
-  if (command !== "round" && command !== "run" && command !== "scoreboard") usage();
+  if (command !== "round" && command !== "run") usage();
 
   const provider = flag(argv, "provider");
   if (provider) process.env.AUTOFIX_PROVIDER = provider;
@@ -140,7 +110,7 @@ async function main(): Promise<void> {
     }
     return;
   }
-  await scoreboard(root, task);
+  usage();
 }
 
 const entry = process.argv[1];

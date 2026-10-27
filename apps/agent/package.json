@@ -14,7 +14,6 @@
     "vitest": "^5.0.3"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.135.0",
     "yaml": "^2.9.1"
   }
 }
