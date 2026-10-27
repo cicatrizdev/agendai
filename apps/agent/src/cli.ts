@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, rmSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { repoRoot } from "./env";
@@ -46,35 +46,6 @@ async function runOnce(root: string, taskId: string): Promise<LoopResult> {
   } finally {
     uninstall();
   }
-}
-
-const RUNS = 5;
-
-async function scoreboard(root: string, taskId: string): Promise<void> {
-  const task = loadTask(taskId);
-  assertBugApplied(root, task.bug);
-  const original = readFileSync(overlapPath(root), "utf8");
-  const uninstall = installSensor(root, task);
-  let passed = 0;
-  try {
-    for (let trial = 0; trial < RUNS; trial += 1) {
-      writeOriginal(root, original);
-      const result = await runLoop(root, task, {
-        complete: defaultComplete(),
-        readOverlap: () => readFileSync(overlapPath(root), "utf8"),
-      });
-      if (result.passed) passed += 1;
-    }
-  } finally {
-    writeOriginal(root, original);
-    uninstall();
-  }
-  console.log(`\n# mini-placar\n${taskId.padEnd(10)} ${passed}/${RUNS}`);
-  console.log("o bug não mudou; o arquivo é o do produto. a taxa é a desta execução.");
-}
-
-function writeOriginal(root: string, contents: string): void {
-  writeFileSync(overlapPath(root), contents);
 }
 
 function usage(): never {
@@ -146,10 +117,6 @@ async function main(): Promise<void> {
         "\n# working tree\noverlap.ts no produto foi corrigido. git checkout -- apps/api/src/domain/overlap.ts devolve o take.",
       );
     }
-    return;
-  }
-  if (command === "scoreboard") {
-    await scoreboard(root, taskId);
     return;
   }
   usage();

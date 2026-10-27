@@ -7,9 +7,7 @@ with seed_users (id, email) as (
     ('a0000000-0000-0000-0000-000000000001'::uuid, 'ana@belavista.test'),
     ('a0000000-0000-0000-0000-000000000002'::uuid, 'bruno@belavista.test'),
     ('a0000000-0000-0000-0000-000000000003'::uuid, 'carla@alfama.test'),
-    ('a0000000-0000-0000-0000-000000000004'::uuid, 'diogo@alfama.test'),
-    ('a0000000-0000-0000-0000-000000000005'::uuid, 'dev@autofix.test'),
-    ('a0000000-0000-0000-0000-000000000006'::uuid, 'lead@autofix.test')
+    ('a0000000-0000-0000-0000-000000000004'::uuid, 'diogo@alfama.test')
 ),
 inserted as (
   insert into auth.users (
@@ -39,11 +37,6 @@ insert into public.memberships (user_id, tenant_id, role) values
   ('a0000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000001', 'staff'),
   ('a0000000-0000-0000-0000-000000000003', 'b0000000-0000-0000-0000-000000000002', 'owner'),
   ('a0000000-0000-0000-0000-000000000004', 'b0000000-0000-0000-0000-000000000002', 'staff');
-
--- Control room operators
-insert into ops.operators (user_id, role) values
-  ('a0000000-0000-0000-0000-000000000005', 'developer'),
-  ('a0000000-0000-0000-0000-000000000006', 'tech_lead');
 
 -- Catalog ------------------------------------------------------------------
 insert into public.staff_members (id, tenant_id, display_name) values

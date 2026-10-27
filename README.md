@@ -3,9 +3,9 @@
 Repositório do curso Alura **"Engenharia de Loops: Arquitetando Agentes de IA Autônomos"**.
 
 - **Agendaí** (`apps/web`, `apps/api`, `supabase/`): SaaS multi-tenant de agendamentos. É o mundo onde o loop trabalha.
-- **Loop:** módulo 1 no laboratório. Módulos 2 e 3 no chat, com `AGENTS.md`. O script `pnpm autofix` nasce no módulo 4. Módulos 5 e 6 são o loop e a governança desse script. Não se constrói uma sala de controle.
+- **Loop:** módulo 1 no laboratório. Módulos 2 e 3 no chat, com `AGENTS.md`. A partir do 4.1 o mesmo grok edita. O script `pnpm autofix` nasce no 4.3: harness em volta do agente. Módulos 4, 5 e 6 têm quatro aulas cada. Não se constrói uma sala de controle.
 
-O vídeo 1.1 mostra o Agendaí e o placar do laboratório. O ops-console do M0 permanece estático e não é o produto do curso.
+O vídeo 1.1 mostra o Agendaí.
 
 ## Pré-requisitos
 
@@ -34,8 +34,6 @@ Usuários do seed (senha `agendai123`):
 | bruno@belavista.test | staff | Salão Bela Vista (São Paulo) |
 | carla@alfama.test | owner | Estúdio Alfama (Lisboa) |
 | diogo@alfama.test | staff | Estúdio Alfama (Lisboa) |
-| dev@autofix.test | developer | Sala de controle |
-| lead@autofix.test | tech lead | Sala de controle |
 
 ## Comandos
 
@@ -45,12 +43,24 @@ Usuários do seed (senha `agendai123`):
 | `pnpm break --bug=<id>` | Injeta um bug do catálogo (`bugs/<id>.patch`) |
 | `pnpm restore` | Desfaz o bug injetado |
 | `pnpm check:tasks` | Valida todas as tarefas: o bug faz os graders falharem e a solução de referência faz passar. `--task=<id>` roda uma só; `--skip-db` pula o banco |
-| `pnpm autofix ask --task=bug-001` | Módulo 4 em diante. Especificação ao grok. Não grava no arquivo |
-| `pnpm autofix contexts --task=bug-001` | Módulo 4 em diante. Três contextos. Não grava no arquivo |
-| `pnpm autofix round --task=bug-001` | Módulo 4. Uma volta no grok, depois o teste da tarefa. Antes: `pnpm break --bug=bug-001` |
-| `pnpm autofix run --task=bug-001` | M5. O grok em loop até o teste passar ou o teto. Antes: `pnpm break --bug=bug-001` |
-| `pnpm autofix run --task=escalate-001` | M6. Devolve a issue da taxa sem editar arquivo |
-| `pnpm autofix round --task=security-001` | M6. O patch em `.env` é recusado |
+| `pnpm autofix ask --task=bug-001` | Especificação ao grok. Não grava no arquivo |
+| `pnpm autofix contexts --task=bug-001` | Três contextos. Não grava no arquivo |
+| `pnpm autofix round --task=bug-001` | 4.3/4.4. Uma sessão unattended no grok, depois o teste da tarefa. Antes: `pnpm break --bug=bug-001` |
+| `pnpm autofix run --task=bug-001` | 5.1/5.2. Sessões até o teste passar ou o teto. Antes: `pnpm break --bug=bug-001` |
+| `pnpm autofix run --task=escalate-001` | 6.1. Devolve a issue da taxa sem editar arquivo |
+| `pnpm autofix round --task=security-001` | 6.2. Diff em `.env` é recusado. Antes: `pnpm break --bug=bug-003` |
+
+O mapa vídeo → arquivo está em [`docs/agent.md`](docs/agent.md).
+
+## Construir o harness do zero
+
+A tag `aula-4.1-inicio` tem só o `cli.ts` de uso. O guia [`docs/prompts/construir-autofix.md`](docs/prompts/construir-autofix.md) traz o prompt da forma inicial (uma sessão unattended, sem sensor e sem loop) e a escada dos vídeos 4.4 a 6.4. A implementação de referência fica em `checkpoint/modulo-4`.
+
+```bash
+git switch -c meu-autofix aula-4.1-inicio
+```
+
+Exercício opcional depois do 5.2: [`docs/exercicios/loop.md`](docs/exercicios/loop.md).
 
 ## Catálogo de tarefas
 
@@ -72,18 +82,16 @@ Suítes em `evals/suites/`: `capability`, `regression` e `security`.
 ```
 apps/web            Agendaí (React + Vite + TanStack Query + React Router)
 apps/api            Agendaí API (Fastify; regras de negócio puras em src/domain)
-apps/agent          programa do harness, a partir do módulo 4 (`pnpm autofix`)
-apps/ops-console    leftover do M0, dados estáticos; não entra em aula
-packages/shared     tipos, schemas Zod, Result, eventos do agente
+apps/agent          harness, a partir do módulo 4 (`pnpm autofix`)
+packages/shared     tipos, schemas Zod, Result
 packages/eslint-rules  regras ESLint customizadas
-supabase/           migrações (schemas public e ops), seed e testes pgTAP
+supabase/           migrações (schema public), seed e testes pgTAP
 bugs/               patches que injetam bugs
-evals/              tarefas, suítes e cassetes
-infra/sandbox       leftover do M0; não entra em aula
+evals/              tarefas e suítes
 scripts/            verify, break, restore, check:tasks
 docs/               decisões e mapa do curso
 ```
 
 O módulo 1 já foi gravado. O código desse laboratório não está mais no repositório.
 
-Decisões de projeto: [`docs/decisions.md`](docs/decisions.md). Mapa Versão E: [`docs/course-map.md`](docs/course-map.md).
+Decisões de projeto: [`docs/decisions.md`](docs/decisions.md). Mapa Versão F: [`docs/course-map.md`](docs/course-map.md).

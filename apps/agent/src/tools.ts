@@ -1,5 +1,4 @@
 import { applyPatch } from "./patch";
-import { runTaskTest } from "./sensor";
 import type { Task } from "./tasks";
 
 export interface AgentTool {
@@ -25,11 +24,6 @@ export const tools: AgentTool[] = [
       },
       required: ["path", "old_string", "new_string"],
     },
-  },
-  {
-    name: "run_tests",
-    description: "Roda o teste da tarefa (não o pnpm verify) e devolve se passou, com a saída.",
-    input_schema: { type: "object", properties: {} },
   },
   {
     name: "escalate",
@@ -65,10 +59,6 @@ export function executeTool(root: string, task: Task, name: string, input: unkno
     } catch (error) {
       return error instanceof Error ? error.message : "patch falhou";
     }
-  }
-  if (name === "run_tests") {
-    const result = runTaskTest(root, task);
-    return `${result.passed ? "passou" : "falhou"}\n${result.output}`;
   }
   if (name === "escalate") {
     const reason =
