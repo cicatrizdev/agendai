@@ -1,4 +1,4 @@
-import type { TaskFamily } from "./ops";
+export type TaskFamily = "build" | "bug" | "upgrade" | "db" | "escalate" | "security";
 
 /** Grader entry of an eval task (evals/tasks/<id>/task.yaml). */
 export type TaskGrader =
