@@ -19,12 +19,10 @@
     "check:tasks": "tsx scripts/check-tasks.ts",
     "dev:api": "pnpm --filter @agendai/api dev",
     "dev:web": "pnpm --filter @agendai/web dev",
-    "dev:console": "pnpm --filter @autofix/ops-console dev",
     "autofix": "pnpm --filter @autofix/agent autofix --"
   },
   "devDependencies": {
     "@agendai/shared": "workspace:*",
-    "@anthropic-ai/sdk": "^0.135.0",
     "@eslint/js": "^10.0.1",
     "@types/node": "^24.19.0",
     "eslint": "^10.11.0",

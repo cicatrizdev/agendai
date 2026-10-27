@@ -7,7 +7,7 @@ import { agendaiPlugin } from "./packages/eslint-rules/src/index.ts";
 
 export default defineConfig(
   {
-    ignores: ["**/node_modules/**", "**/dist/**", "evals/tasks/**", "evals/cassettes/**", "supabase/**"],
+    ignores: ["**/node_modules/**", "**/dist/**", "evals/tasks/**", "supabase/**"],
   },
   js.configs.recommended,
   tseslint.configs.recommended,
@@ -22,7 +22,7 @@ export default defineConfig(
     },
   },
   {
-    files: ["apps/web/**/*.{ts,tsx}", "apps/ops-console/**/*.{ts,tsx}"],
+    files: ["apps/web/**/*.{ts,tsx}"],
     languageOptions: { globals: { ...globals.browser } },
     plugins: { "react-hooks": reactHooks },
     rules: {

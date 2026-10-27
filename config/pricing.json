@@ -1,4 +1,0 @@
-{
-  "_comment": "Preço em USD por milhão de tokens, por ID de modelo. Preencha com a tabela atual do provedor; o harness lê este arquivo a partir da Aula 5.",
-  "models": {}
-}
