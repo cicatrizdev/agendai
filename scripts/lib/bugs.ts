@@ -23,8 +23,15 @@ export function applyBug(root: string, bugId: string): { ok: true } | { ok: fals
 
 /** Reverts `bugs/<id>.patch` from the working tree at `root`. */
 export function revertBug(root: string, bugId: string): { ok: true } | { ok: false; error: string } {
-  const result = runCapture("git", ["apply", "-R", bugPatchPath(root, bugId)], root);
-  return result.code === 0 ? { ok: true } : { ok: false, error: result.output };
+  const patch = bugPatchPath(root, bugId);
+  const reverse = runCapture("git", ["apply", "-R", patch], root);
+  if (reverse.code === 0) return { ok: true };
+
+  // Tree already matches the unbroken baseline (e.g. after `git checkout` of the patched file).
+  const forward = runCapture("git", ["apply", "--check", patch], root);
+  if (forward.code === 0) return { ok: true };
+
+  return { ok: false, error: reverse.output };
 }
 
 export function readBrokenState(root: string): string[] {
