@@ -14,7 +14,22 @@ import type { EvalTask } from "@agendai/shared";
 import { applyBug } from "./lib/bugs";
 import { hasFlag, readFlag, runCapture, type RunResult } from "./lib/run";
 import { gradersOf, hiddenCodeTests, hiddenDbTests, loadTasks, validateStructure, validateSuites, type LoadedTask } from "./lib/tasks";
-import { VERIFY_STEPS } from "./lib/verify-steps";
+
+interface VerifyStep {
+  name: string;
+  command: string;
+  args: string[];
+  needsDb: boolean;
+}
+
+/** Same oracle the old `pnpm verify` ran, in order. */
+const VERIFY_STEPS: VerifyStep[] = [
+  { name: "typecheck", command: "pnpm", args: ["typecheck"], needsDb: false },
+  { name: "lint", command: "pnpm", args: ["lint"], needsDb: false },
+  { name: "test", command: "pnpm", args: ["test"], needsDb: false },
+  { name: "db reset", command: "supabase", args: ["db", "reset"], needsDb: true },
+  { name: "db test", command: "supabase", args: ["test", "db"], needsDb: true },
+];
 
 const root = process.cwd();
 const onlyTask = readFlag("task");
