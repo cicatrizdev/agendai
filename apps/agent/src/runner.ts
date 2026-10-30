@@ -4,8 +4,8 @@ import type { Task } from "./tasks";
 /** Enough agent turns for one unattended session. Not a harness retry loop. */
 const SESSION_TURNS = 16;
 
-export function runSession(root: string, task: Task): string {
-  const prompt = [task.report, task.prompt].filter(Boolean).join("\n\n");
+export function runSession(root: string, task: Task, extra = ""): string {
+  const prompt = [task.report, task.prompt, extra].filter(Boolean).join("\n\n");
   const result = spawnSync(
     "grok",
     [
@@ -15,11 +15,11 @@ export function runSession(root: string, task: Task): string {
       "dontAsk",
       "--max-turns",
       String(SESSION_TURNS),
+      "--no-alt-screen",
     ],
     {
       cwd: root,
-      encoding: "utf8",
-      maxBuffer: 20 * 1024 * 1024,
+      stdio: "inherit",
     },
   );
 
@@ -27,5 +27,5 @@ export function runSession(root: string, task: Task): string {
     throw new Error(`não foi possível executar o grok: ${result.error.message}`);
   }
 
-  return [result.stdout, result.stderr].filter(Boolean).join("\n").trim();
+  return "";
 }

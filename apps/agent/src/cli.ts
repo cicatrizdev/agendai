@@ -2,12 +2,14 @@ import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { runSession } from "./runner";
-import { loadTask, repoRoot } from "./tasks";
+import { installSensor, runTaskTest, type TestResult } from "./sensor";
+import { loadTask, repoRoot, type Task } from "./tasks";
 
 const argv = process.argv.slice(2).filter((arg) => arg !== "--");
 
 function usage(): never {
   console.error("Uso: pnpm autofix round --task=bug-001");
+  console.error("     pnpm autofix run --task=bug-001");
   process.exit(1);
 }
 
@@ -41,6 +43,16 @@ function gitDiffStat(root: string): string {
   return (result.stdout ?? "").trim();
 }
 
+function runSensor(root: string, task: Task): TestResult {
+  if (!task.sensorRelPath) return { passed: false, output: "" };
+  const uninstall = installSensor(root, task);
+  try {
+    return runTaskTest(root, task);
+  } finally {
+    uninstall();
+  }
+}
+
 function round(): void {
   const id = readFlag("task");
   if (!id) usage();
@@ -49,19 +61,61 @@ function round(): void {
   const task = loadTask(id, root);
   requireBroken(root, task.bug);
 
-  const session = runSession(root, task);
-  const diff = gitDiffStat(root);
-
   console.log("# modelo");
-  if (session) console.log(session);
+  runSession(root, task);
+  const diff = gitDiffStat(root);
+  const test = runSensor(root, task);
+
   if (diff) console.log(diff);
+  console.log("# teste");
+  if (task.sensorRelPath) {
+    console.log(test.passed ? "passou" : "falhou");
+    if (test.output) console.log(test.output);
+  }
   console.log("# parada");
   console.log("uma sessão. sem segunda chamada.");
 }
 
+function printTeste(diff: string, task: Task, test: TestResult): void {
+  if (diff) console.log(diff);
+  console.log("# teste");
+  if (task.sensorRelPath) {
+    console.log(test.passed ? "passou" : "falhou");
+    if (test.output) console.log(test.output);
+  }
+}
+
+const TETO = 3;
+
+function run(): void {
+  const id = readFlag("task");
+  if (!id) usage();
+
+  const root = repoRoot();
+  const task = loadTask(id, root);
+  requireBroken(root, task.bug);
+
+  let volta = 0;
+  let extra = "";
+  let test: TestResult = { passed: false, output: "" };
+
+  while (!test.passed && volta < TETO) {
+    volta += 1;
+    console.log(`# volta ${volta}`);
+    runSession(root, task, extra);
+    test = runSensor(root, task);
+    printTeste(gitDiffStat(root), task, test);
+    extra = `Saída do teste:\n${test.output}`;
+  }
+
+  console.log("# parada");
+  console.log(test.passed ? "passou" : "teto");
+}
+
 try {
-  if (argv[0] !== "round") usage();
-  round();
+  if (argv[0] === "round") round();
+  else if (argv[0] === "run") run();
+  else usage();
 } catch (error) {
   console.error(error instanceof Error ? error.message : error);
   process.exit(1);
