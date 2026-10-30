@@ -1,7 +1,8 @@
 import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { runSession } from "./runner";
+import { parseTaskIds, summarizeRun } from "./batch";
+import { discardDiff, enforceContract, runSession, snapshotSecrets } from "./runner";
 import { installSensor, runTaskTest, type TestResult } from "./sensor";
 import { loadTask, repoRoot, type Task } from "./tasks";
 
@@ -10,6 +11,7 @@ const argv = process.argv.slice(2).filter((arg) => arg !== "--");
 function usage(): never {
   console.error("Uso: pnpm autofix round --task=bug-001");
   console.error("     pnpm autofix run --task=bug-001");
+  console.error("     pnpm autofix run --task=bug-001,bug-002,bug-003");
   process.exit(1);
 }
 
@@ -43,6 +45,10 @@ function gitDiffStat(root: string): string {
   return (result.stdout ?? "").trim();
 }
 
+function printRefused(paths: string[]): void {
+  for (const path of paths) console.log(`caminho fora do contrato: ${path}`);
+}
+
 function runSensor(root: string, task: Task): TestResult {
   if (!task.sensorRelPath) return { passed: false, output: "" };
   const uninstall = installSensor(root, task);
@@ -54,15 +60,28 @@ function runSensor(root: string, task: Task): TestResult {
 }
 
 function round(): void {
-  const id = readFlag("task");
-  if (!id) usage();
+  const raw = readFlag("task");
+  if (!raw) usage();
+  const ids = parseTaskIds(raw);
+  const id = ids[0];
+  if (!id || ids.length !== 1) {
+    throw new Error("round aceita uma tarefa. Use run --task=bug-001,bug-002 para várias.");
+  }
 
   const root = repoRoot();
   const task = loadTask(id, root);
   requireBroken(root, task.bug);
 
   console.log("# modelo");
+  const secrets = snapshotSecrets(root);
   runSession(root, task);
+  const refused = enforceContract(root, task, secrets);
+  if (refused.length > 0) {
+    printRefused(refused);
+    console.log("# parada");
+    console.log("recusado");
+    return;
+  }
   const diff = gitDiffStat(root);
   const test = runSensor(root, task);
 
@@ -87,13 +106,15 @@ function printTeste(diff: string, task: Task, test: TestResult): void {
 
 const TETO = 3;
 
-function run(): void {
-  const id = readFlag("task");
-  if (!id) usage();
-
-  const root = repoRoot();
-  const task = loadTask(id, root);
-  requireBroken(root, task.bug);
+function runOneTask(root: string, task: Task): string {
+  if (task.expectedOutcome === "escalate") {
+    console.log("# volta 1");
+    runSession(root, task, "");
+    const diff = gitDiffStat(root);
+    if (diff) console.log(diff);
+    discardDiff(root);
+    return "escalado";
+  }
 
   let volta = 0;
   let extra = "";
@@ -102,14 +123,46 @@ function run(): void {
   while (!test.passed && volta < TETO) {
     volta += 1;
     console.log(`# volta ${volta}`);
+    const secrets = snapshotSecrets(root);
     runSession(root, task, extra);
+    const refused = enforceContract(root, task, secrets);
+    if (refused.length > 0) {
+      printRefused(refused);
+      return "recusado";
+    }
     test = runSensor(root, task);
     printTeste(gitDiffStat(root), task, test);
     extra = `Saída do teste:\n${test.output}`;
   }
 
-  console.log("# parada");
-  console.log(test.passed ? "passou" : "teto");
+  return test.passed ? "passou" : "teto";
+}
+
+function run(): void {
+  const raw = readFlag("task");
+  if (!raw) usage();
+  const ids = parseTaskIds(raw);
+  const root = repoRoot();
+  const tasks = ids.map((id) => loadTask(id, root));
+  for (const task of tasks) requireBroken(root, task.bug);
+
+  const many = tasks.length > 1;
+  const results: { id: string; stop: string }[] = [];
+
+  for (const task of tasks) {
+    if (many) console.log(`# tarefa ${task.id}`);
+    const stop = runOneTask(root, task);
+    console.log("# parada");
+    console.log(stop);
+    results.push({ id: task.id, stop });
+  }
+
+  if (many) {
+    const summary = summarizeRun(results);
+    console.log("# geral");
+    console.log(summary.overall);
+    for (const item of summary.failed) console.log(`${item.id} ${item.stop}`);
+  }
 }
 
 try {

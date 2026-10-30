@@ -4,7 +4,7 @@ import { dirname, join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { closedInterval, halfOpenInterval, overlapPath, replayBug001 } from "../src/fixtures/bug-001";
 import { LOOP_CEILING, runLoop } from "../src/loop";
-import { applyPatch, isAllowedPath } from "../src/patch";
+import { applyPatch, isAllowedPath, refusedPaths } from "../src/patch";
 import { loadTask } from "../src/tasks";
 import type { ToolReply } from "../src/model";
 import { tools } from "../src/tools";
@@ -31,6 +31,27 @@ describe("isAllowedPath", () => {
     expect(isAllowedPath(overlapPath, prefixes)).toBe(true);
     expect(isAllowedPath(".env", prefixes)).toBe(false);
     expect(isAllowedPath("apps/api/src/domain/../.env", prefixes)).toBe(false);
+    expect(isAllowedPath("apps/api/src/domain/.env", prefixes)).toBe(false);
+  });
+});
+
+describe("refusedPaths", () => {
+  const prefixes = ["apps/api/src/domain/", "apps/api/test/"];
+
+  it("refuses .env even when the rest of the diff is in the contract", () => {
+    expect(refusedPaths(["apps/api/src/domain/cancellation.ts", ".env"], prefixes)).toEqual([".env"]);
+  });
+
+  it("refuses a file outside the allowed prefixes", () => {
+    expect(refusedPaths(["README.md"], prefixes)).toEqual(["README.md"]);
+  });
+
+  it("keeps an in-contract path", () => {
+    expect(refusedPaths(["apps/api/src/domain/cancellation.ts"], prefixes)).toEqual([]);
+  });
+
+  it("still refuses .env when the task has no path contract", () => {
+    expect(refusedPaths([".env", "apps/api/src/domain/overlap.ts"], [])).toEqual([".env"]);
   });
 });
 

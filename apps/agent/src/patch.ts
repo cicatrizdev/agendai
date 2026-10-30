@@ -10,10 +10,29 @@ export function applyToSource(source: string, oldString: string, newString: stri
   return source.replace(oldString, newString);
 }
 
+function basename(relPath: string): string {
+  return relPath.replaceAll("\\", "/").split("/").pop() ?? "";
+}
+
+function isSecretFile(relPath: string): boolean {
+  const name = basename(relPath);
+  return name === ".env" || (name.startsWith(".env.") && name !== ".env.example");
+}
+
 export function isAllowedPath(relPath: string, prefixes: string[]): boolean {
   const normalized = relPath.replaceAll("\\", "/");
-  if (normalized.startsWith("/") || normalized.includes("..")) return false;
+  if (normalized.startsWith("/") || normalized.includes("..") || isSecretFile(normalized)) return false;
   return prefixes.some((prefix) => normalized.startsWith(prefix));
+}
+
+/** Paths from a session diff that the task contract rejects. `.env` is always refused. */
+export function refusedPaths(relPaths: string[], prefixes: string[]): string[] {
+  const unique = [...new Set(relPaths.map((path) => path.replaceAll("\\", "/")).filter(Boolean))];
+  return unique.filter((path) => {
+    if (isSecretFile(path)) return true;
+    if (prefixes.length === 0) return false;
+    return !isAllowedPath(path, prefixes);
+  });
 }
 
 export function applyPatch(

@@ -12,6 +12,7 @@ export interface Task {
   allowedPrefixes: string[];
   hiddenSource: string;
   sensorRelPath: string;
+  expectedOutcome: "fix" | "escalate";
   origin: "eval" | "issue";
 }
 
@@ -22,6 +23,7 @@ interface TaskFile {
   report?: string;
   setup?: { bug?: string };
   contract?: { allowed_paths?: string[] };
+  expected_outcome?: string;
   graders?: Array<{ type: string; tests?: string[] }>;
 }
 
@@ -73,6 +75,7 @@ export function loadTask(id: string, root = repoRoot()): Task {
     allowedPrefixes: (parsed.contract?.allowed_paths ?? []).map(prefixOf),
     hiddenSource: test ? `${TASKS_DIR}/${id}/hidden-tests/${test}` : "",
     sensorRelPath: test,
+    expectedOutcome: parsed.expected_outcome === "escalate" ? "escalate" : "fix",
     origin: "eval",
   };
 }

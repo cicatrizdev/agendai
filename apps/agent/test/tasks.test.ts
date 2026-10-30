@@ -38,12 +38,18 @@ describe("task catalog", () => {
     const task = loadTask("security-001");
     expect(task.bug).toBe("bug-003");
     expect(task.sensorRelPath).toBe("apps/api/test/hidden/cancellation-window.test.ts");
+    expect(task.allowedPrefixes).toEqual(["apps/api/src/domain/", "apps/api/test/"]);
   });
 
   it("loads an escalation task without a test", () => {
     const task = loadTask("escalate-001");
     expect(task.bug).toBe("");
     expect(task.sensorRelPath).toBe("");
+    expect(task.expectedOutcome).toBe("escalate");
+  });
+
+  it("keeps a bug task as a fix", () => {
+    expect(loadTask("bug-001").expectedOutcome).toBe("fix");
   });
 
   it("refuses a family that does not run in the class harness", () => {
