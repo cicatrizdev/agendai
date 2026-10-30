@@ -25,3 +25,13 @@ describe("fitsBusinessHours (Lisbon, 10:00–19:00 on weekdays)", () => {
     expect(fitsBusinessHours(slot("2026-01-11T12:00:00Z", "2026-01-11T13:00:00Z"), lisbonSchedule)).toBe(false);
   });
 });
+
+describe("fitsBusinessHours uses the tenant time zone (Lisbon summer, UTC+1)", () => {
+  it("accepts a slot that starts at 10:00 local (09:00 UTC)", () => {
+    expect(fitsBusinessHours(slot("2026-07-13T09:00:00Z", "2026-07-13T10:00:00Z"), lisbonSchedule)).toBe(true);
+  });
+
+  it("rejects a slot that starts at 19:00 local (18:00 UTC), already closed", () => {
+    expect(fitsBusinessHours(slot("2026-07-13T18:00:00Z", "2026-07-13T19:00:00Z"), lisbonSchedule)).toBe(false);
+  });
+});

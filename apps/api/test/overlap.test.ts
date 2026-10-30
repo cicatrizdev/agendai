@@ -23,6 +23,13 @@ describe("overlaps", () => {
     const b = { start: at("2026-01-12T14:00:00Z"), end: at("2026-01-12T15:00:00Z") };
     expect(overlaps(a, b)).toBe(false);
   });
+
+  it("does not overlap intervals that only touch at 10:00", () => {
+    const untilTen = { start: at("2026-01-12T09:00:00Z"), end: at("2026-01-12T10:00:00Z") };
+    const fromTen = { start: at("2026-01-12T10:00:00Z"), end: at("2026-01-12T11:00:00Z") };
+    expect(overlaps(untilTen, fromTen)).toBe(false);
+    expect(overlaps(fromTen, untilTen)).toBe(false);
+  });
 });
 
 describe("findConflict", () => {

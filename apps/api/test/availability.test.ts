@@ -53,4 +53,16 @@ describe("listAvailableSlots", () => {
     });
     expect(sunday).toEqual([]);
   });
+
+  it("offers Lisbon summer slots in the tenant time zone (10:00–18:00 local, UTC+1)", () => {
+    const slots = listAvailableSlots({
+      date: "2026-07-13",
+      service: makeService({ durationMinutes: 60 }),
+      staffMemberId: STAFF_ID,
+      schedule: lisbonSchedule,
+      bookings: [],
+    });
+    expect(slots[0]).toBe("2026-07-13T09:00:00.000Z");
+    expect(slots.at(-1)).toBe("2026-07-13T17:00:00.000Z");
+  });
 });
